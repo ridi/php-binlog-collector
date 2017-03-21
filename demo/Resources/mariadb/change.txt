@@ -1,0 +1,27 @@
+my.cnf 변경 -> my.master.cnf
+server-id               = 1
+log_bin                 = /var/log/mysql/mariadb-bin
+log_bin_index           = /var/log/mysql/mariadb-bin.index
+binlog-format           = row
+
+my.cnf 변경 -> my.slave.cnf
+server-id               = 2
+log_bin                 = /var/log/mysql/mariadb-bin
+log_bin_index           = /var/log/mysql/mariadb-bin.index
+# slaves
+relay_log               = /var/log/mysql/relay-bin
+relay_log_index = /var/log/mysql/relay-bin.index
+relay_log_info_file     = /var/log/mysql/relay-bin.info
+log_slave_updates
+binlog-format           = row
+
+my.cnf 변경 -> my.slave-slave.cnf
+server-id               = 3
+log_bin                 = /var/log/mysql/mariadb-bin
+log_bin_index           = /var/log/mysql/mariadb-bin.index
+# slaves
+relay_log               = /var/log/mysql/relay-bin
+relay_log_index = /var/log/mysql/relay-bin.index
+relay_log_info_file     = /var/log/mysql/relay-bin.info
+log_slave_updates
+binlog-format           = row
