@@ -11215,4 +11215,5 @@ DELETE FROM binlog_sample2.test_no_target2 WHERE admin_id IN ('admin_00100');
 DELETE FROM binlog_sample3.test_target3 WHERE admin_id IN ('admin_00100');
 DELETE FROM binlog_sample3.test_no_target3 WHERE admin_id IN ('admin_00100');
 DELETE FROM binlog_sample4.test_target4 WHERE admin_id IN ('admin_00100');
-DELETE FROM binlog_sample4.test_no_target4 WHERE admin_id IN ('admin_00100');INSERT INTO binlog_sample1.test_target1 (admin_id) VALUES ('admin_00001');
+DELETE FROM binlog_sample4.test_no_target4 WHERE admin_id IN ('admin_00100');
+INSERT INTO binlog_sample1.test_target1 (admin_id) VALUES ('admin_00001');

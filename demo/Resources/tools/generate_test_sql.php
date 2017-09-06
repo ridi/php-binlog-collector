@@ -166,4 +166,4 @@ print(implode("\n", $queries));
 // 맨 마지막 GTID는 분석을 안하기 때문에 INSERT 하나 추가
 $queries = [];
 $queries [] = makeTestTargetInsertSql('binlog_sample1', 'test_target1', 'admin_00001');
-print(implode("\n", $queries));
+print("\n".implode("\n", $queries));

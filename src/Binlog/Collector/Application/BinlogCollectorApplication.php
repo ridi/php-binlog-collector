@@ -153,11 +153,11 @@ class BinlogCollectorApplication
 				$gtid_offset_range_dto
 			);
 
-			$binlog_stream = new MySQLReplicationFactory($new_binlog_worker_config->connect_config);
+			$binlog_stream = new MySQLReplicationFactory();
 			$binlog_stream->registerSubscriber($insert_binlog_subscriber);
 
 			while (true) {
-				$binlog_stream->binLogEvent();
+				$binlog_stream->consume();
 			}
 		} catch (BinlogFinishedException $e) {
 			$this->logger->info($e->getMessage());

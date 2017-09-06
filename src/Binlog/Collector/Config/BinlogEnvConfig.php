@@ -4,6 +4,7 @@ namespace Binlog\Collector\Config;
 
 use Binlog\Collector\Exception\MsgException;
 use Binlog\Collector\External\RowEventValueSkipperInterface;
+use MySQLReplication\Definitions\ConstEventType;
 
 /**
  * Class BinlogEnvConfig
@@ -111,7 +112,8 @@ class BinlogEnvConfig
 			'password' => BinlogEnvConfig::getTargetBinlogDbParams()['password'],
 			'charset' => BinlogEnvConfig::getTargetBinlogDbParams()['charset'],
 			'tablesOnly' => [],
-			'databasesOnly' => []
+			'databasesOnly' => [],
+			'eventsIgnore' => [ConstEventType::FORMAT_DESCRIPTION_EVENT],
 		];
 	}
 

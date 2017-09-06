@@ -86,7 +86,8 @@ class BinlogEventCollector
 			[
 				ConstEventsNames::GTID,
 				ConstEventsNames::TABLE_MAP,
-				ConstEventsNames::QUERY
+				ConstEventsNames::QUERY,
+				ConstEventsNames::FORMAT_DESCRIPTION
 			]
 		)) {
 			return true;
