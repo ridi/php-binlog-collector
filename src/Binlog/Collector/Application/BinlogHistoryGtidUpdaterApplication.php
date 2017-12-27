@@ -15,7 +15,6 @@ use Monolog\Logger;
 class BinlogHistoryGtidUpdaterApplication
 {
     const PARTITION_COUNT = 10;
-    const CHILD_MAX_ALLOW_ERROR_COUNT = 10;
     const CHILD_ONCE_BINLOG_FETCH_LIMIT = 1000;
     const MAX_COUNT_PER_CHILD = 100000;
     const MIN_COUNT_PER_CHILD = 1000;
