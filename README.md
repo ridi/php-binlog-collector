@@ -17,7 +17,7 @@ composer require ridibooks/binlog-collector
 2. 직접 Github 사용
 
 ```sh
-git clone https://github.com/ridibooks/binlog-collector.git
+git clone https://github.com/ridi/binlog-collector.git
 composer install -o
 ```
 
@@ -36,7 +36,7 @@ TARGET_DB 접근 권한은 **REPLICATION SLAVE, REPLICATION CLIENT, SELECT** 가
 
 # DB 연결 설정
 
-[.env.local](https://github.com/ridibooks/binlog-collector/tree/master/demo/include/.env.local)는 아래와 같습니다. 
+[.env.local](https://github.com/ridi/binlog-collector/tree/master/demo/include/.env.local)는 아래와 같습니다. 
 
 TARGET_DB는 분석할 DB, HISTORY_WRITE_DB는 분석 위치 및 이력 데이터를 저장할 DB 입니다.
 
@@ -93,22 +93,18 @@ php [every]binlog_collect_partitioner.php change_pos [binLogFileName] [binLogPos
 ```
 
 2. 이미 분석을 시작했다면, 아래 명령어로 DB에 저장된 위치로부터 계속 분석 범위를 나눕니다.
-
 ```sh
 php [every]binlog_collect_partitioner.php continue
 ```
 
 3.  Partitioner가 나눈 범위에 대해서 Binlog Collector Worker가 병렬적으로 처리합니다.
-   1.   worker 실행시 분석할 데이터베이스명과 테이블명을 입력해야 합니다
-
 ```sh
 php [every]binlog_collector_worker.php
 ```
 
 
-
-
 데모
 =========
 
-모든 데모들은  [demo directory](https://github.com/ridibooks/binlog-collector/tree/master/demo) 에서 이용할 수 있고, docker 기반의 mariadb 환경 및 실제 구동을 테스트 해볼 수 있습니다. 관련 블로그를 통해서 보다 자세한 내용을 확인할 수 있습니다.
+모든 데모들은  [demo directory](https://github.com/ridi/binlog-collector/tree/master/demo) 에서 이용할 수 있고, docker 기반의 mariadb 환경 및 실제 구동은 travis-ci를 통해서 테스트 해볼 수 있습니다. 
+[MariaDB Binlog을 이용한 변경사항 추적](https://www.ridicorp.com/blog/2017/10/30/binlog-collector) 에서 설계 내용을 확인 할 수 있습니다.

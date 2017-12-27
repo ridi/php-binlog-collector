@@ -1,6 +1,6 @@
 <?php
 
-namespace BinLog\Tests;
+namespace Binlog\Tests;
 
 use Binlog\Collector\BinlogHistoryGtidChildUpdater;
 use PHPUnit\Framework\TestCase;
