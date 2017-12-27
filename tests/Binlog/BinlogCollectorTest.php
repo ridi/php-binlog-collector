@@ -7,8 +7,8 @@ use PHPUnit\Framework\TestCase;
 class BinlogCollectorTest extends TestCase
 {
 
-	public function test()
-	{
+    public function test()
+    {
 
-	}
+    }
 }

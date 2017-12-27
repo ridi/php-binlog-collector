@@ -23,10 +23,10 @@ $DELETE_BINLOG_COL_COUNT = 160000;
 $BINLOG_COL_COUNT = $WRITE_BINLOG_COL_COUNT + $UPDATE_BINLOG_COL_COUNT + $DELETE_BINLOG_COL_COUNT;
 
 $TARGET_TABLES = [
-	'binlog_sample1.test_target1',
-	'binlog_sample2.test_target2',
-	'binlog_sample3.test_target3',
-	'binlog_sample4.test_target4'
+    'binlog_sample1.test_target1',
+    'binlog_sample2.test_target2',
+    'binlog_sample3.test_target3',
+    'binlog_sample4.test_target4'
 ];
 $binlog_history_model = BinlogHistoryModel::createBinlogHistoryWrite();
 
@@ -39,22 +39,22 @@ print("binlog_total_row_count: {$binlog_row_count}\n");
 print("binlog_total_col_count: {$binlog_col_count}\n");
 
 if ($binlog_count !== $BINLOG_TOTAL_COUNT
-	|| $binlog_row_count !== $BINLOG_ROW_COUNT
-	|| $binlog_col_count !== $BINLOG_COL_COUNT
+    || $binlog_row_count !== $BINLOG_ROW_COUNT
+    || $binlog_col_count !== $BINLOG_COL_COUNT
 ) {
-	print("error!\n");
+    print("error!\n");
 } else {
-	print("success!\n");
+    print("success!\n");
 }
 
 $write_row_count = $binlog_history_model->getBinlogRowCount(
-	['u_row.table_name' => $TARGET_TABLES, 'u_row.action' => 'write']
+    ['u_row.table_name' => $TARGET_TABLES, 'u_row.action' => 'write']
 );
 $update_row_count = $binlog_history_model->getBinlogRowCount(
-	['u_row.table_name' => $TARGET_TABLES, 'u_row.action' => 'update']
+    ['u_row.table_name' => $TARGET_TABLES, 'u_row.action' => 'update']
 );
 $delete_row_count = $binlog_history_model->getBinlogRowCount(
-	['u_row.table_name' => $TARGET_TABLES, 'u_row.action' => 'delete']
+    ['u_row.table_name' => $TARGET_TABLES, 'u_row.action' => 'delete']
 );
 
 print("write_binlog_row_count: {$write_row_count}\n");
@@ -62,22 +62,22 @@ print("update_binlog_row_count: {$update_row_count}\n");
 print("delete_binlog_row_count: {$delete_row_count}\n");
 
 if ($write_row_count !== $WRITE_BINLOG_ROW_COUNT
-	|| $update_row_count !== $UPDATE_BINLOG_ROW_COUNT
-	|| $delete_row_count !== $DELETE_BINLOG_ROW_COUNT
+    || $update_row_count !== $UPDATE_BINLOG_ROW_COUNT
+    || $delete_row_count !== $DELETE_BINLOG_ROW_COUNT
 ) {
-	print("error!\n");
+    print("error!\n");
 } else {
-	print("success!\n");
+    print("success!\n");
 }
 
 $write_col_count = $binlog_history_model->getBinlogColumnCount(
-	['u_row.table_name' => $TARGET_TABLES, 'u_row.action' => 'write']
+    ['u_row.table_name' => $TARGET_TABLES, 'u_row.action' => 'write']
 );
 $update_col_count = $binlog_history_model->getBinlogColumnCount(
-	['u_row.table_name' => $TARGET_TABLES, 'u_row.action' => 'update']
+    ['u_row.table_name' => $TARGET_TABLES, 'u_row.action' => 'update']
 );
 $delete_col_count = $binlog_history_model->getBinlogColumnCount(
-	['u_row.table_name' => $TARGET_TABLES, 'u_row.action' => 'delete']
+    ['u_row.table_name' => $TARGET_TABLES, 'u_row.action' => 'delete']
 );
 
 print("write_binlog_col_count: {$write_col_count}\n");
@@ -85,10 +85,10 @@ print("update_binlog_col_count: {$update_col_count}\n");
 print("delete_binlog_col_count: {$delete_col_count}\n");
 
 if ($write_col_count !== $WRITE_BINLOG_COL_COUNT
-	|| $update_col_count !== $UPDATE_BINLOG_COL_COUNT
-	|| $delete_col_count !== $DELETE_BINLOG_COL_COUNT
+    || $update_col_count !== $UPDATE_BINLOG_COL_COUNT
+    || $delete_col_count !== $DELETE_BINLOG_COL_COUNT
 ) {
-	print("error!\n");
+    print("error!\n");
 } else {
-	print("success!\n");
+    print("success!\n");
 }

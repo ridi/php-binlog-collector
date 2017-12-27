@@ -12,15 +12,15 @@ use Binlog\Collector\Monitor\TimeMonitor;
 
 $lock = new FileLock(basename(__FILE__));
 if (!$lock->tryLock()) {
-	die();
+    die();
 }
 $env_config = BinlogEnvConfig::importDefaultConfig();
 $exception_handler = new DefaultSentryExceptionHandler('/var/log/ridi/', 'binlog_collector', $env_config);
 $configuration = BinlogConfiguration::newInstance($argv, $env_config, $exception_handler);
 
 $function = function () use ($configuration) {
-	$application = new BinlogCollectorApplication($configuration);
-	$application->executePartitioning();
+    $application = new BinlogCollectorApplication($configuration);
+    $application->executePartitioning();
 };
 TimeMonitor::benchmark(TimeMonitorConst::TYPE_BINLOG_PARTITIONER, $function);
 

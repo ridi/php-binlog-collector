@@ -10,7 +10,7 @@ use Binlog\Collector\Library\FileLock;
 
 $lock = new FileLock(basename(__FILE__));
 if (!$lock->tryLock()) {
-	die();
+    die();
 }
 $env_config = BinlogEnvConfig::importDefaultConfig();
 $exception_handler = new DefaultSentryExceptionHandler('/var/log/ridi/', 'binlog_history_gtid_updater', $env_config);

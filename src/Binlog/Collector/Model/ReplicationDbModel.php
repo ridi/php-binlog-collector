@@ -13,95 +13,95 @@ use MySQLReplication\Config\Config;
  */
 class ReplicationDbModel
 {
-	/** @var Connection */
-	private $connection;
+    /** @var Connection */
+    private $connection;
 
-	public function __construct(Config $config)
-	{
-		$this->connection = $this->initConnection($config);
-	}
+    public function __construct(Config $config)
+    {
+        $this->connection = $this->initConnection($config);
+    }
 
-	private function initConnection(Config $config): Connection
-	{
-		$config->validate();
+    private function initConnection(Config $config): Connection
+    {
+        $config->validate();
 
-		return DriverManager::getConnection(
-			[
-				'user' => $config->getUser(),
-				'password' => $config->getPassword(),
-				'host' => $config->getHost(),
-				'port' => empty($config->getPort()) ? 3306 : $config->getPort(),
-				'driver' => 'pdo_mysql',
-				'charset' => $config->getCharset()
-			]
-		);
-	}
+        return DriverManager::getConnection(
+            [
+                'user' => $config->getUser(),
+                'password' => $config->getPassword(),
+                'host' => $config->getHost(),
+                'port' => empty($config->getPort()) ? 3306 : $config->getPort(),
+                'driver' => 'pdo_mysql',
+                'charset' => $config->getCharset()
+            ]
+        );
+    }
 
-	public function getConnection(): Connection
-	{
-		if (false === $this->connection->ping()) {
-			$this->connection->close();
-			$this->connection->connect();
-		}
+    public function getConnection(): Connection
+    {
+        if (false === $this->connection->ping()) {
+            $this->connection->close();
+            $this->connection->connect();
+        }
 
-		return $this->connection;
-	}
+        return $this->connection;
+    }
 
-	public function close()
-	{
-		$this->connection->close();
-	}
+    public function close()
+    {
+        $this->connection->close();
+    }
 
-	public function getBinlogGtidPos(string $binlog_filename, int $binlog_offset): string
-	{
-		$gtid = $this->getConnection()->fetchAssoc(
-			"SELECT BINLOG_GTID_POS(\"{$binlog_filename}\", {$binlog_offset} ) as mariadb_gtid"
-		)['mariadb_gtid'];
+    public function getBinlogGtidPos(string $binlog_filename, int $binlog_offset): string
+    {
+        $gtid = $this->getConnection()->fetchAssoc(
+            "SELECT BINLOG_GTID_POS(\"{$binlog_filename}\", {$binlog_offset} ) as mariadb_gtid"
+        )['mariadb_gtid'];
 
-		return ($gtid !== null) ? $gtid : '';
-	}
+        return ($gtid !== null) ? $gtid : '';
+    }
 
-	public function showMasterStatus(): array
-	{
-		return $this->getConnection()->fetchAssoc("SHOW MASTER STATUS");
-	}
+    public function showMasterStatus(): array
+    {
+        return $this->getConnection()->fetchAssoc("SHOW MASTER STATUS");
+    }
 
-	public function showBinlogEvents(string $log_name, int $pos, int $offset = 0, int $row_count = 1000): array
-	{
-		try {
-			return $this->getConnection()->fetchAll(
-				"SHOW BINLOG EVENTS IN '{$log_name}' FROM {$pos} LIMIT {$offset}, {$row_count}"
-			);
-		} catch (DriverException $e) {
-			return [];
-		}
-	}
+    public function showBinlogEvents(string $log_name, int $pos, int $offset = 0, int $row_count = 1000): array
+    {
+        try {
+            return $this->getConnection()->fetchAll(
+                "SHOW BINLOG EVENTS IN '{$log_name}' FROM {$pos} LIMIT {$offset}, {$row_count}"
+            );
+        } catch (DriverException $e) {
+            return [];
+        }
+    }
 
-	public function showBinlogEventsFromInit(string $log_name, int $offset = 0, int $row_count = 1000): array
-	{
-		try {
-			return $this->getConnection()->fetchAll(
-				"SHOW BINLOG EVENTS IN '{$log_name}' LIMIT {$offset}, {$row_count}"
-			);
-		} catch (DriverException $e) {
-			return [];
-		}
-	}
+    public function showBinlogEventsFromInit(string $log_name, int $offset = 0, int $row_count = 1000): array
+    {
+        try {
+            return $this->getConnection()->fetchAll(
+                "SHOW BINLOG EVENTS IN '{$log_name}' LIMIT {$offset}, {$row_count}"
+            );
+        } catch (DriverException $e) {
+            return [];
+        }
+    }
 
-	public function showBinlogEventsUsingThrowException(string $log_name): array
-	{
-		return $this->getConnection()->fetchAll("SHOW BINLOG EVENTS IN '{$log_name}' LIMIT 0, 1");
-	}
+    public function showBinlogEventsUsingThrowException(string $log_name): array
+    {
+        return $this->getConnection()->fetchAll("SHOW BINLOG EVENTS IN '{$log_name}' LIMIT 0, 1");
+    }
 
-	public function getTableNames(array $table_schemas): array
-	{
-		$sql = "SELECT DISTINCT `TABLE_NAME` FROM `information_schema`.`COLUMNS`";
+    public function getTableNames(array $table_schemas): array
+    {
+        $sql = "SELECT DISTINCT `TABLE_NAME` FROM `information_schema`.`COLUMNS`";
 
-		$where = '';
-		if (count($table_schemas) > 0) {
-			$where = 'WHERE `TABLE_SCHEMA` in ( "' . implode('","', $table_schemas) . '")';
-		}
+        $where = '';
+        if (count($table_schemas) > 0) {
+            $where = 'WHERE `TABLE_SCHEMA` in ( "' . implode('","', $table_schemas) . '")';
+        }
 
-		return $this->getConnection()->fetchAll($sql . $where);
-	}
+        return $this->getConnection()->fetchAll($sql . $where);
+    }
 }

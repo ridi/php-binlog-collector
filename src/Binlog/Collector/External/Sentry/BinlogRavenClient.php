@@ -10,32 +10,32 @@ use MySQLReplication\Binlog\Exception\BinlogException;
  */
 class BinlogRavenClient extends \Raven_Client
 {
-	/**
-	 * BinlogRavenClient constructor.
-	 *
-	 * @param mixed  $options_or_dsn
-	 * @param array  $options
-	 */
-	public function __construct($options_or_dsn = null, $options = []) {
-		parent::__construct($options_or_dsn, $options);
-	}
+    /**
+     * BinlogRavenClient constructor.
+     *
+     * @param mixed  $options_or_dsn
+     * @param array  $options
+     */
+    public function __construct($options_or_dsn = null, $options = []) {
+        parent::__construct($options_or_dsn, $options);
+    }
 
-	/**
-	 * @param string $exception
-	 * @param mixed  $data
-	 * @param mixed  $logger
-	 * @param mixed  $vars
-	 *
-	 * @return null|string|void
-	 */
-	public function captureException($exception, $data = null, $logger = null, $vars = null)
-	{
-		if ($exception instanceof BinlogException
-			&& $exception->getMessage() === BinlogException::DISCONNECTED_MESSAGE) {
-			return;
-		}
-		$data['level'] = self::ERROR;
+    /**
+     * @param string $exception
+     * @param mixed  $data
+     * @param mixed  $logger
+     * @param mixed  $vars
+     *
+     * @return null|string|void
+     */
+    public function captureException($exception, $data = null, $logger = null, $vars = null)
+    {
+        if ($exception instanceof BinlogException
+            && $exception->getMessage() === BinlogException::DISCONNECTED_MESSAGE) {
+            return;
+        }
+        $data['level'] = self::ERROR;
 
-		parent::captureException($exception, $data, $logger, $vars);
-	}
+        parent::captureException($exception, $data, $logger, $vars);
+    }
 }

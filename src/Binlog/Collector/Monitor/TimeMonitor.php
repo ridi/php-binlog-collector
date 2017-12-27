@@ -13,15 +13,15 @@ use Binlog\Collector\Monitor\Model\BinlogTimeMonitorModel;
  */
 class TimeMonitor
 {
-	public static function benchmark(string $type, callable $func)
-	{
-		$start_time = time();
+    public static function benchmark(string $type, callable $func)
+    {
+        $start_time = time();
 
-		$func();
+        $func();
 
-		$elapsed_time = time() - $start_time;
-		$monitor_dto = TimeMonitorDto::importFromElapsedTime($type, $elapsed_time);
+        $elapsed_time = time() - $start_time;
+        $monitor_dto = TimeMonitorDto::importFromElapsedTime($type, $elapsed_time);
 
-		BinlogTimeMonitorModel::createBinlogHistoryWrite()->insertTimeMonitor($monitor_dto);
-	}
+        BinlogTimeMonitorModel::createBinlogHistoryWrite()->insertTimeMonitor($monitor_dto);
+    }
 }

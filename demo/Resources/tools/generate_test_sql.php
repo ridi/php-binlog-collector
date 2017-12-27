@@ -5,62 +5,62 @@ const ROW_COUNT_PER_LINE = 10;
 
 function makeTestTargetInsertSqlBulk(string $database_name, string $table_name, string $admin_id): string
 {
-	$sql = "INSERT INTO {$database_name}.{$table_name} (admin_id) VALUES\n";
+    $sql = "INSERT INTO {$database_name}.{$table_name} (admin_id) VALUES\n";
 
-	for ($i = 1; $i <= TOTAL_BATCH_ROW_COUNT; $i++) {
-		$sql .= "('{$admin_id}')";
-		$sql .= ($i === TOTAL_BATCH_ROW_COUNT) ? ';' : ',';
-		if ($i % ROW_COUNT_PER_LINE === 0) {
-			$sql .= "\n";
-		}
-	}
+    for ($i = 1; $i <= TOTAL_BATCH_ROW_COUNT; $i++) {
+        $sql .= "('{$admin_id}')";
+        $sql .= ($i === TOTAL_BATCH_ROW_COUNT) ? ';' : ',';
+        if ($i % ROW_COUNT_PER_LINE === 0) {
+            $sql .= "\n";
+        }
+    }
 
-	return $sql;
+    return $sql;
 }
 
 function makeTestTargetInsertSqlNotBulk(string $database_name, string $table_name, string $admin_id): string
 {
-	$queries = [];
-	for ($i = 1; $i <= TOTAL_BATCH_ROW_COUNT; $i++) {
-		$queries[] = "INSERT INTO {$database_name}.{$table_name} (admin_id) VALUES ('{$admin_id}');";
-	}
+    $queries = [];
+    for ($i = 1; $i <= TOTAL_BATCH_ROW_COUNT; $i++) {
+        $queries[] = "INSERT INTO {$database_name}.{$table_name} (admin_id) VALUES ('{$admin_id}');";
+    }
 
-	return implode("\n", $queries);
+    return implode("\n", $queries);
 }
 
 function makeTestTargetInsertSql(string $database_name, string $table_name, string $admin_id): string
 {
-	$sql = "INSERT INTO {$database_name}.{$table_name} (admin_id) VALUES ('{$admin_id}');";
+    $sql = "INSERT INTO {$database_name}.{$table_name} (admin_id) VALUES ('{$admin_id}');";
 
-	return $sql;
+    return $sql;
 }
 
 function makeTestTargetUpdateSql(
-	string $database_name,
-	string $table_name,
-	int $data_postfix_index,
-	array $admin_ids
+    string $database_name,
+    string $table_name,
+    int $data_postfix_index,
+    array $admin_ids
 ): string {
-	$update_data = sprintf(
-		"UPDATE_DAT_1000_0000_2000_0000_3000_0000_4000_0000_5000_0000_6000_0000_7000_0000_8000_0000_9000_0000_1000_0000_1100_0000_1200_0000_1300_0000_1400_0000_1500_0000_1600_0000_1700_0000_1800_0000_1900_%04d",
-		$data_postfix_index
-	);
-	$sql = "UPDATE {$database_name}.{$table_name} SET data = '{$update_data}' WHERE admin_id IN ('" . implode(
-			',',
-			$admin_ids
-		) . "');";
+    $update_data = sprintf(
+        "UPDATE_DAT_1000_0000_2000_0000_3000_0000_4000_0000_5000_0000_6000_0000_7000_0000_8000_0000_9000_0000_1000_0000_1100_0000_1200_0000_1300_0000_1400_0000_1500_0000_1600_0000_1700_0000_1800_0000_1900_%04d",
+        $data_postfix_index
+    );
+    $sql = "UPDATE {$database_name}.{$table_name} SET data = '{$update_data}' WHERE admin_id IN ('" . implode(
+            ',',
+            $admin_ids
+        ) . "');";
 
-	return $sql;
+    return $sql;
 }
 
 function makeTestTargetDeleteSql(
-	string $database_name,
-	string $table_name,
-	array $admin_ids
+    string $database_name,
+    string $table_name,
+    array $admin_ids
 ): string {
-	$sql = "DELETE FROM {$database_name}.{$table_name} WHERE admin_id IN ('" . implode(',', $admin_ids) . "');";
+    $sql = "DELETE FROM {$database_name}.{$table_name} WHERE admin_id IN ('" . implode(',', $admin_ids) . "');";
 
-	return $sql;
+    return $sql;
 }
 
 
@@ -125,41 +125,41 @@ SQL;
 print($sql . "\n");
 $queries = [];
 for ($j = 1; $j <= 100; $j++) {
-	$admin_id = sprintf("admin_%05d", $j);
-	$queries[] = makeTestTargetInsertSqlBulk('binlog_sample1', 'test_target1', $admin_id);
-	$queries[] = makeTestTargetInsertSqlBulk('binlog_sample1', 'test_no_target1', $admin_id);
-	$queries[] = makeTestTargetInsertSqlBulk('binlog_sample2', 'test_target2', $admin_id);
-	$queries[] = makeTestTargetInsertSqlBulk('binlog_sample2', 'test_no_target2', $admin_id);
-	$queries[] = makeTestTargetInsertSqlBulk('binlog_sample3', 'test_target3', $admin_id);
-	$queries[] = makeTestTargetInsertSqlBulk('binlog_sample3', 'test_no_target3', $admin_id);
-	$queries[] = makeTestTargetInsertSqlBulk('binlog_sample4', 'test_target4', $admin_id);
-	$queries[] = makeTestTargetInsertSqlBulk('binlog_sample4', 'test_no_target4', $admin_id);
+    $admin_id = sprintf("admin_%05d", $j);
+    $queries[] = makeTestTargetInsertSqlBulk('binlog_sample1', 'test_target1', $admin_id);
+    $queries[] = makeTestTargetInsertSqlBulk('binlog_sample1', 'test_no_target1', $admin_id);
+    $queries[] = makeTestTargetInsertSqlBulk('binlog_sample2', 'test_target2', $admin_id);
+    $queries[] = makeTestTargetInsertSqlBulk('binlog_sample2', 'test_no_target2', $admin_id);
+    $queries[] = makeTestTargetInsertSqlBulk('binlog_sample3', 'test_target3', $admin_id);
+    $queries[] = makeTestTargetInsertSqlBulk('binlog_sample3', 'test_no_target3', $admin_id);
+    $queries[] = makeTestTargetInsertSqlBulk('binlog_sample4', 'test_target4', $admin_id);
+    $queries[] = makeTestTargetInsertSqlBulk('binlog_sample4', 'test_no_target4', $admin_id);
 }
 print(implode("\n", $queries));
 $queries = [];
 for ($j = 1; $j <= 100; $j++) {
-	$admin_id = sprintf("admin_%05d", $j);
-	$queries[] = makeTestTargetUpdateSql('binlog_sample1', 'test_target1', $j, [$admin_id]);
-	$queries[] = makeTestTargetUpdateSql('binlog_sample1', 'test_no_target1', $j, [$admin_id]);
-	$queries[] = makeTestTargetUpdateSql('binlog_sample2', 'test_target2', $j, [$admin_id]);
-	$queries[] = makeTestTargetUpdateSql('binlog_sample2', 'test_no_target2', $j, [$admin_id]);
-	$queries[] = makeTestTargetUpdateSql('binlog_sample3', 'test_target3', $j, [$admin_id]);
-	$queries[] = makeTestTargetUpdateSql('binlog_sample3', 'test_no_target3', $j, [$admin_id]);
-	$queries[] = makeTestTargetUpdateSql('binlog_sample4', 'test_target4', $j, [$admin_id]);
-	$queries[] = makeTestTargetUpdateSql('binlog_sample4', 'test_no_target4', $j, [$admin_id]);
+    $admin_id = sprintf("admin_%05d", $j);
+    $queries[] = makeTestTargetUpdateSql('binlog_sample1', 'test_target1', $j, [$admin_id]);
+    $queries[] = makeTestTargetUpdateSql('binlog_sample1', 'test_no_target1', $j, [$admin_id]);
+    $queries[] = makeTestTargetUpdateSql('binlog_sample2', 'test_target2', $j, [$admin_id]);
+    $queries[] = makeTestTargetUpdateSql('binlog_sample2', 'test_no_target2', $j, [$admin_id]);
+    $queries[] = makeTestTargetUpdateSql('binlog_sample3', 'test_target3', $j, [$admin_id]);
+    $queries[] = makeTestTargetUpdateSql('binlog_sample3', 'test_no_target3', $j, [$admin_id]);
+    $queries[] = makeTestTargetUpdateSql('binlog_sample4', 'test_target4', $j, [$admin_id]);
+    $queries[] = makeTestTargetUpdateSql('binlog_sample4', 'test_no_target4', $j, [$admin_id]);
 }
 print(implode("\n", $queries));
 $queries = [];
 for ($j = 1; $j <= 100; $j++) {
-	$admin_id = sprintf("admin_%05d", $j);
-	$queries[] = makeTestTargetDeleteSql('binlog_sample1', 'test_target1', [$admin_id]);
-	$queries[] = makeTestTargetDeleteSql('binlog_sample1', 'test_no_target1', [$admin_id]);
-	$queries[] = makeTestTargetDeleteSql('binlog_sample2', 'test_target2', [$admin_id]);
-	$queries[] = makeTestTargetDeleteSql('binlog_sample2', 'test_no_target2', [$admin_id]);
-	$queries[] = makeTestTargetDeleteSql('binlog_sample3', 'test_target3', [$admin_id]);
-	$queries[] = makeTestTargetDeleteSql('binlog_sample3', 'test_no_target3', [$admin_id]);
-	$queries[] = makeTestTargetDeleteSql('binlog_sample4', 'test_target4', [$admin_id]);
-	$queries[] = makeTestTargetDeleteSql('binlog_sample4', 'test_no_target4', [$admin_id]);
+    $admin_id = sprintf("admin_%05d", $j);
+    $queries[] = makeTestTargetDeleteSql('binlog_sample1', 'test_target1', [$admin_id]);
+    $queries[] = makeTestTargetDeleteSql('binlog_sample1', 'test_no_target1', [$admin_id]);
+    $queries[] = makeTestTargetDeleteSql('binlog_sample2', 'test_target2', [$admin_id]);
+    $queries[] = makeTestTargetDeleteSql('binlog_sample2', 'test_no_target2', [$admin_id]);
+    $queries[] = makeTestTargetDeleteSql('binlog_sample3', 'test_target3', [$admin_id]);
+    $queries[] = makeTestTargetDeleteSql('binlog_sample3', 'test_no_target3', [$admin_id]);
+    $queries[] = makeTestTargetDeleteSql('binlog_sample4', 'test_target4', [$admin_id]);
+    $queries[] = makeTestTargetDeleteSql('binlog_sample4', 'test_no_target4', [$admin_id]);
 }
 print(implode("\n", $queries));
 

@@ -12,36 +12,36 @@ use Gnf\db\base;
  */
 abstract class BinlogHistoryBaseModel
 {
-	/**
-	 * @var base
-	 */
-	protected $db;
+    /**
+     * @var base
+     */
+    protected $db;
 
-	private function __construct($db)
-	{
-		$this->db = $db;
-	}
+    private function __construct($db)
+    {
+        $this->db = $db;
+    }
 
-	/**
-	 * @param base $db
-	 *
-	 * @return static
-	 */
-	private static function create(base $db)
-	{
-		return new static($db);
-	}
+    /**
+     * @param base $db
+     *
+     * @return static
+     */
+    private static function create(base $db)
+    {
+        return new static($db);
+    }
 
-	/**
-	 * @return static
-	 */
-	public static function createBinlogHistoryWrite()
-	{
-		return self::create(GnfConnectionProvider::getGnfConnection(BinlogEnvConfig::HISTORY_WRITE_DB));
-	}
+    /**
+     * @return static
+     */
+    public static function createBinlogHistoryWrite()
+    {
+        return self::create(GnfConnectionProvider::getGnfConnection(BinlogEnvConfig::HISTORY_WRITE_DB));
+    }
 
-	public function transactional(callable $callable)
-	{
-		return $this->db->transactional($callable);
-	}
+    public function transactional(callable $callable)
+    {
+        return $this->db->transactional($callable);
+    }
 }

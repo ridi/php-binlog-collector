@@ -10,31 +10,31 @@ use PHPUnit\Framework\TestCase;
 
 class BinlogConfigurationTest extends TestCase
 {
-	public function testCreateConnectConfigWithReplace()
-	{
-		$tables_only = ['table'];
-		$databases_only = ['database'];
+    public function testCreateConnectConfigWithReplace()
+    {
+        $tables_only = ['table'];
+        $databases_only = ['database'];
 
-		$binlog_env_config = BinlogEnvConfig::extendDefaultConfig(
-			[],
-			new DefaultRowEventValueSkipper($tables_only, $databases_only)
-		);
-		$exception_handler = new DefaultSentryExceptionHandler(
-			'/var/log/ridi/', 'binlog_collector', $binlog_env_config
-		);
+        $binlog_env_config = BinlogEnvConfig::extendDefaultConfig(
+            [],
+            new DefaultRowEventValueSkipper($tables_only, $databases_only)
+        );
+        $exception_handler = new DefaultSentryExceptionHandler(
+            '/var/log/ridi/', 'binlog_collector', $binlog_env_config
+        );
 
-		$binlog_configuration = BinlogConfiguration::newInstanceForOnce([], $binlog_env_config, $exception_handler);
-		$new_binlog_worker_config = $binlog_configuration->extendWorkerConfig(
-			[
-				'slaveId' => '999',
-				'ip' => '127.0.0.2'
-			],
-			[
-				'child_index' => 1
-			]
-		);
-		$this->assertEquals('127.0.0.2', $new_binlog_worker_config->connect_config->getHost());
-		$this->assertEquals('999', $new_binlog_worker_config->connect_config->getSlaveId());
-		$this->assertEquals(1, $new_binlog_worker_config->child_index);
-	}
+        $binlog_configuration = BinlogConfiguration::newInstanceForOnce([], $binlog_env_config, $exception_handler);
+        $new_binlog_worker_config = $binlog_configuration->extendWorkerConfig(
+            [
+                'slaveId' => '999',
+                'ip' => '127.0.0.2'
+            ],
+            [
+                'child_index' => 1
+            ]
+        );
+        $this->assertEquals('127.0.0.2', $new_binlog_worker_config->connect_config->getHost());
+        $this->assertEquals('999', $new_binlog_worker_config->connect_config->getSlaveId());
+        $this->assertEquals(1, $new_binlog_worker_config->child_index);
+    }
 }

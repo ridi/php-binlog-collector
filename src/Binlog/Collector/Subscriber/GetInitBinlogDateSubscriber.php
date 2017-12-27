@@ -12,24 +12,24 @@ use MySQLReplication\Event\EventSubscribers;
  */
 class GetInitBinlogDateSubscriber extends EventSubscribers
 {
-	/** @var string|null */
-	private $current_binlog_date;
+    /** @var string|null */
+    private $current_binlog_date;
 
-	public function __construct() {}
+    public function __construct() {}
 
-	protected function allEvents(EventDTO $event)
-	{
-		if ($event->getType() === ConstEventsNames::FORMAT_DESCRIPTION) {
-			return;
-		}
-		$this->current_binlog_date = $event->getEventInfo()->getDateTime();
-	}
+    protected function allEvents(EventDTO $event)
+    {
+        if ($event->getType() === ConstEventsNames::FORMAT_DESCRIPTION) {
+            return;
+        }
+        $this->current_binlog_date = $event->getEventInfo()->getDateTime();
+    }
 
-	/**
-	 * @return string|null
-	 */
-	public function getCurrentBinlogDate()
-	{
-		return $this->current_binlog_date;
-	}
+    /**
+     * @return string|null
+     */
+    public function getCurrentBinlogDate()
+    {
+        return $this->current_binlog_date;
+    }
 }

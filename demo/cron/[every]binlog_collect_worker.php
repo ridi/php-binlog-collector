@@ -13,15 +13,15 @@ use Binlog\Collector\Monitor\TimeMonitor;
 
 $lock = new FileLock(basename(__FILE__));
 if (!$lock->tryLock()) {
-	die();
+    die();
 }
 
 $tables_only = ['test_target1', 'test_target2', 'test_target3', 'test_target4'];
 $databasesOnly = ['binlog_sample1','binlog_sample2','binlog_sample3','binlog_sample4'];
 
 $env_config = BinlogEnvConfig::extendDefaultConfig(
-	[],
-	new DefaultRowEventValueSkipper($tables_only, $databasesOnly)
+    [],
+    new DefaultRowEventValueSkipper($tables_only, $databasesOnly)
 );
 
 $env_config->validateTarget();
@@ -29,8 +29,8 @@ $exception_handler = new DefaultSentryExceptionHandler('/var/log/ridi/', 'binlog
 $configuration = BinlogConfiguration::newInstance($argv, $env_config, $exception_handler);
 
 $function = function () use ($configuration) {
-	$application = new BinlogCollectorApplication($configuration);
-	$application->executeWorking();
+    $application = new BinlogCollectorApplication($configuration);
+    $application->executeWorking();
 };
 TimeMonitor::benchmark(TimeMonitorConst::TYPE_BINLOG_WORKER, $function);
 
