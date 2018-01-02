@@ -13,7 +13,7 @@ if (!$lock->tryLock()) {
     die();
 }
 $env_config = BinlogEnvConfig::importDefaultConfig();
-$exception_handler = new DefaultSentryExceptionHandler('/var/log/ridi/', 'binlog_history_gtid_updater', $env_config);
+$exception_handler = new DefaultSentryExceptionHandler('./', 'binlog_history_gtid_updater', $env_config);
 $configuration = BinlogConfiguration::newInstance($argv, $env_config, $exception_handler);
 
 $application = new BinlogHistoryGtidUpdaterApplication($configuration);
