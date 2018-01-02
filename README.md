@@ -1,5 +1,6 @@
 php-binlog-collector
 =========
+[![Build Status](https://travis-ci.org/kobi97/php-binlog-collector.svg?branch=master)](https://travis-ci.org/kobi97/php-binlog-collector)
 
 PHP로 만들어진 MySQL/MariaDB 복제 프로토콜 라이브러리를 이용한, MariaDB Binlog 기반의 변경사항 수집 응용 어플리케이션으로 분석 범위를 분할하는 Partitioner와 실제 변경사항 데이터를 수집하는 Worker로 구성되어 있습니다.
 
