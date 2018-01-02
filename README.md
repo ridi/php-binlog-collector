@@ -1,6 +1,6 @@
 php-binlog-collector
 =========
-[![Build Status](https://travis-ci.org/kobi97/php-binlog-collector.svg?branch=master)](https://travis-ci.org/kobi97/php-binlog-collector)
+[![Build Status](https://travis-ci.org/ridi/php-binlog-collector.svg?branch=master)](https://travis-ci.org/kobi97/php-binlog-collector)
 
 PHP로 만들어진 MySQL/MariaDB 복제 프로토콜 라이브러리를 이용한, MariaDB Binlog 기반의 변경사항 수집 응용 어플리케이션으로 분석 범위를 분할하는 Partitioner와 실제 변경사항 데이터를 수집하는 Worker로 구성되어 있습니다.
 
@@ -37,7 +37,7 @@ TARGET_DB 접근 권한은 **REPLICATION SLAVE, REPLICATION CLIENT, SELECT** 가
 
 # DB 연결 설정
 
-[.env.local](https://github.com/ridi/php-inlog-collector/tree/master/demo/include/.env.local)는 아래와 같습니다. 
+[.env.local](https://github.com/ridi/php-binlog-collector/tree/master/demo/include/.env.local)는 아래와 같습니다. 
 
 TARGET_DB는 분석할 DB, HISTORY_WRITE_DB는 분석 위치 및 이력 데이터를 저장할 DB 입니다.
 
