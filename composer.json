@@ -1,6 +1,6 @@
 {
-  "name": "ridibooks/binlog-collector",
-  "description": "Ridibooks Binlog Collector",
+  "name": "ridibooks/php-binlog-collector",
+  "description": "Ridibooks PHP Binlog Collector",
   "type": "library",
   "license": "MIT",
   "authors": [

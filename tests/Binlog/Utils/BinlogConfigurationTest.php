@@ -1,6 +1,6 @@
 <?php
 
-namespace BinLog\Tests\Utils;
+namespace Binlog\Tests\Utils;
 
 use Binlog\Collector\Config\BinlogConfiguration;
 use Binlog\Collector\Config\BinlogEnvConfig;

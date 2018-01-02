@@ -1,0 +1,41 @@
+language: php
+
+php:
+  - '7.0'
+
+services:
+  - docker
+
+cache:
+  apt: true
+  bundler: true
+  directories:
+    - $HOME/.composer/cache
+
+before_script:
+  - docker build -t db-master ./demo/Resources/docker/db-master
+  - docker build -t db-slave ./demo/Resources/docker/db-slave
+  - docker build -t db-slave-slave ./demo/Resources/docker/db-slave-slave
+  - docker run -p 13306:3306  --name db-master -e MYSQL_ROOT_PASSWORD=1234 -d db-master
+  - docker run -p 13307:3306 --name db-slave --link db-master:master -e MYSQL_ROOT_PASSWORD=1234 -d db-slave
+  - docker run -p 13308:3306  --name db-slave-slave --link db-slave:slave -e MYSQL_ROOT_PASSWORD=1234 -d db-slave-slave
+  - sleep 20;
+  - docker exec -it db-master bash -c "mysql -uroot -p1234 < temp/my.master.sql"
+  - sleep 5;
+  - docker exec -it db-slave bash -c "mysql -uroot -p1234 < temp/my.slave.sql"
+  - sleep 5;
+  - docker exec -it db-slave-slave bash -c "mysql -uroot -p1234 < temp/my.slave-slave.sql"
+  - sleep 5;
+  - docker exec -it db-master bash -c "mysql -uroot -p1234 < temp/my.master.init_test.sql"
+  - sleep 5
+
+install:
+  travis_retry composer install --no-interaction --prefer-dist;
+
+script:
+ - php ./demo/cron/\[every\]binlog_collect_partitioner.php change_pos mariadb-bin.000004 4
+ - php ./demo/cron/\[every\]binlog_collect_partitioner.php continue
+ - php ./demo/cron/\[every\]binlog_collect_worker.php
+ - php ./demo/cron/\[every\]binlog_collect_worker.php
+ - php ./demo/cron/\[every\]binlog_collect_worker.php
+ - vendor/bin/phpunit tests
