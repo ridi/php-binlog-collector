@@ -18,7 +18,7 @@ $env_config = BinlogEnvConfig::extendDefaultConfig(
         'jump_offset_for_next_partition' => 1000
     ]
 );
-$exception_handler = new DefaultSentryExceptionHandler('/var/log/ridi/', 'binlog_collector', $env_config);
+$exception_handler = new DefaultSentryExceptionHandler('./', 'binlog_collector', $env_config);
 $configuration = BinlogConfiguration::newInstance($argv, $env_config, $exception_handler);
 
 $application = new BinlogCollectorApplication($configuration);

@@ -23,7 +23,7 @@ class DefaultSentryExceptionHandler implements ExceptionHandlerInterface
 
     public function __construct(string $dir, string $name, BinlogEnvConfig $binlog_env_config)
     {
-        $this->logger = self::createLogger('/var/log/ridi/', 'binlog_collector');
+        $this->logger = self::createLogger($dir, $name);
         if ($binlog_env_config->enable_sentry) {
             self::enableSentry($binlog_env_config->sentry_key);
         }

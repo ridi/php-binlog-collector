@@ -20,7 +20,7 @@ class BinlogConfigurationTest extends TestCase
             new DefaultRowEventValueSkipper($tables_only, $databases_only)
         );
         $exception_handler = new DefaultSentryExceptionHandler(
-            '/var/log/ridi/', 'binlog_collector', $binlog_env_config
+            './', 'binlog_collector', $binlog_env_config
         );
 
         $binlog_configuration = BinlogConfiguration::newInstanceForOnce([], $binlog_env_config, $exception_handler);

@@ -25,7 +25,7 @@ $env_config = BinlogEnvConfig::extendDefaultConfig(
 );
 
 $env_config->validateTarget();
-$exception_handler = new DefaultSentryExceptionHandler('/var/log/ridi/', 'binlog_collector', $env_config);
+$exception_handler = new DefaultSentryExceptionHandler('./', 'binlog_collector', $env_config);
 $configuration = BinlogConfiguration::newInstance($argv, $env_config, $exception_handler);
 
 $function = function () use ($configuration) {
