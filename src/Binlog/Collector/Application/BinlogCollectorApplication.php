@@ -163,8 +163,10 @@ class BinlogCollectorApplication
             $this->logger->info($e->getMessage());
             exit();
         } catch (\Exception $exception) {
-            $this->logger->info("child_index({$child_index} : exception({$exception->getMessage()})");
-            $this->binlog_configuration->exception_handler->triggerException($exception);
+            if ($exception->getMessage() !== 'Success') {
+                $this->logger->info("child_index({$child_index} : exception({$exception->getMessage()})");
+                $this->binlog_configuration->exception_handler->triggerException($exception);
+            }
             exit();
         }
         exit();
