@@ -4,7 +4,7 @@ namespace Binlog\Collector\Config;
 
 use Binlog\Collector\Exception\MsgException;
 use MySQLReplication\Config\Config;
-use MySQLReplication\Config\ConfigService;
+use MySQLReplication\Config\ConfigFactory;
 
 /**
  * Class BinlogPartitionerConfig
@@ -36,7 +36,7 @@ class BinlogPartitionerConfig
 
     public static function create(array $binlog_connect_array, array $binlog_config_array): self
     {
-        $connect_config = (new ConfigService())->makeConfigFromArray($binlog_connect_array);
+        $connect_config = ConfigFactory::makeConfigFromArray($binlog_connect_array);
 
         return BinlogPartitionerConfig::importFromInit($connect_config, $binlog_config_array, $binlog_connect_array);
     }

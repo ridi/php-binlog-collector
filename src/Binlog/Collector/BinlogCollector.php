@@ -400,14 +400,14 @@ class BinlogCollector
             $binlog_file = $current_binlog_offset_dto->file_name;
             $position = $current_binlog_offset_dto->position;
             $gtid = $this->replication_query->convertToBinlogOffsetDto($binlog_file, $position)->mariadb_gtid;
-            BinlogConfiguration::createCustomConnectConfigWithReplace(
+            $config = BinlogConfiguration::createCustomConnectConfigWithReplace(
                 $this->binlog_connect_array,
                 [
                     'slaveId' => $this->binlog_history_service->getTemporarySlaveId(),
                     'mariaDbGtid' => $gtid
                 ]
             );
-            $binlog_stream = new MySQLReplicationFactory();
+            $binlog_stream = new MySQLReplicationFactory($config);
             $binlog_stream->registerSubscriber($subscriber);
 
             while (true) {
