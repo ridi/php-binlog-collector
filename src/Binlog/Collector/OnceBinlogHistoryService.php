@@ -158,7 +158,7 @@ class OnceBinlogHistoryService implements BinlogHistoryServiceInterface
         return $binlog_history_model->getEmptyGtidBinlogIdByLesserIdAndOffset($id, $offset);
     }
 
-    public function updateBinlogGtid(int $id, string $gtid)
+    public function updateBinlogGtid(int $id, string $gtid): void
     {
         $binlog_history_model = OnceBinlogHistoryModel::createBinlogHistoryWrite();
 
@@ -172,15 +172,11 @@ class OnceBinlogHistoryService implements BinlogHistoryServiceInterface
         return $parent_offset_model->getParentBinlogOffset();
     }
 
-    /**
-     * @return string|null
-     */
-    public function getParentBinlogDate()
+    public function getParentBinlogDate(): ?string
     {
         $parent_offset_model = OnceBinlogHistoryParentOffsetModel::createBinlogHistoryWrite();
 
         return $parent_offset_model->getParentBinlogDate();
-
     }
 
     public function upsertParentBinlogOffset(OnlyBinlogOffsetDto $binlog_offset_dto, string $binlog_date = null): int

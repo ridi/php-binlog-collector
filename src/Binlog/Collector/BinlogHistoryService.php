@@ -90,10 +90,7 @@ class BinlogHistoryService implements BinlogHistoryServiceInterface
         return $child_offset_model->deleteChildGtidOffsetRangeById($child_index);
     }
 
-    /**
-     * @return string|null
-     */
-    public function getMinCurrentBinlogPositionDate()
+    public function getMinCurrentBinlogPositionDate(): ?string
     {
         $child_offset_model = BinlogHistoryChildOffsetModel::createBinlogHistoryWrite();
 

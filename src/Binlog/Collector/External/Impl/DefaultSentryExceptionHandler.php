@@ -15,8 +15,8 @@ use Raven_Client;
  */
 class DefaultSentryExceptionHandler implements ExceptionHandlerInterface
 {
-    const DEFAULT_RAVEN_CLIENT_NAME = '__RAVEN_CLIENT';
-    const LOG_FILE_NAME_EXTENSION = '.log';
+    private const DEFAULT_RAVEN_CLIENT_NAME = '__RAVEN_CLIENT';
+    private const LOG_FILE_NAME_EXTENSION = '.log';
 
     /** @var Logger */
     private $logger;
@@ -29,7 +29,7 @@ class DefaultSentryExceptionHandler implements ExceptionHandlerInterface
         }
 
         set_error_handler(
-            function ($severity, $message, $file, $line) {
+            function ($severity, $message, $file, $line): void {
                 if (!(error_reporting() & $severity)) {
                     // This error code is not included in error_reporting
                     return;
@@ -39,7 +39,7 @@ class DefaultSentryExceptionHandler implements ExceptionHandlerInterface
         );
 
         set_exception_handler(
-            function (\Throwable $exception) {
+            function (\Throwable $exception): void {
                 $this->logger->info('file: ' . $exception->getFile() . "\n");
                 $this->logger->info('message: ' . $exception->getMessage() . "\n");
                 $this->logger->info('errorCode: ' . $exception->getCode() . "\n");
@@ -72,7 +72,7 @@ class DefaultSentryExceptionHandler implements ExceptionHandlerInterface
         return $logger;
     }
 
-    private function enableSentry(string $sentry_key)
+    private function enableSentry(string $sentry_key): void
     {
         $raven_client = new BinlogRavenClient($sentry_key, ['processors' => []]);
 

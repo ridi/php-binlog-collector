@@ -34,7 +34,7 @@ class BinlogCollectorApplication
         $this->logger = $this->binlog_configuration->exception_handler->getLogger();
     }
 
-    public function getInfo()
+    public function getInfo(): void
     {
         $partitioner_config = $this->binlog_configuration->createPartitionerConfig();
         try {
@@ -46,7 +46,7 @@ class BinlogCollectorApplication
         }
     }
 
-    public function executePartitioning()
+    public function executePartitioning(): void
     {
         $partitioner_config = $this->binlog_configuration->createPartitionerConfig();
         try {
@@ -58,7 +58,7 @@ class BinlogCollectorApplication
         }
     }
 
-    public function executeWorking()
+    public function executeWorking(): void
     {
         $worker_config = $this->binlog_configuration->createWorkerConfig();
         try {
@@ -72,7 +72,7 @@ class BinlogCollectorApplication
 
         $total_dtos_count = count($gtid_offset_range_dtos);
         $child_pid_to_slave_id = [];
-        for ($i = 0; ($i < $worker_config->child_process_max_count && $i < $total_dtos_count); $i++) {
+        for ($i = 0; $i < $worker_config->child_process_max_count && $i < $total_dtos_count; $i++) {
             // 리소스를 공유하기 때문에 fork하기 전에 기존 리소스 반환
             GnfConnectionProvider::closeAllConnections();
 
@@ -129,7 +129,7 @@ class BinlogCollectorApplication
         int $child_index,
         BinlogWorkerConfig $worker_config,
         OnlyGtidOffsetRangeDto $gtid_range_dto
-    ) {
+    ): void {
         try {
             $replication_query = new ReplicationQuery(new ReplicationDbModel($worker_config->connect_config));
             $gtid_offset_range_dto = GtidOffsetRangeDto::create($replication_query, $child_index, $gtid_range_dto);
@@ -137,10 +137,10 @@ class BinlogCollectorApplication
             $new_binlog_worker_config = $this->binlog_configuration->extendWorkerConfig(
                 [
                     'slaveId' => $slave_id,
-                    'mariaDbGtid' => $gtid_offset_range_dto->start_dto->mariadb_gtid
+                    'mariaDbGtid' => $gtid_offset_range_dto->start_dto->mariadb_gtid,
                 ],
                 [
-                    'child_index' => $child_index
+                    'child_index' => $child_index,
                 ]
             );
 

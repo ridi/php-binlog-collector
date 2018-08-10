@@ -10,7 +10,7 @@ use Binlog\Collector\Dto\OnlyBinlogOffsetDto;
  */
 class OnceBinlogHistoryParentOffsetModel extends BinlogHistoryBaseModel
 {
-    const CURRENT_OFFSET = 0;
+    private const CURRENT_OFFSET = 0;
 
     public function getParentBinlogOffset(): OnlyBinlogOffsetDto
     {
@@ -26,10 +26,7 @@ class OnceBinlogHistoryParentOffsetModel extends BinlogHistoryBaseModel
         );
     }
 
-    /**
-     * @return string|null
-     */
-    public function getParentBinlogDate()
+    public function getParentBinlogDate(): ?string
     {
         return $this->db->sqlData(
             'SELECT end_bin_log_date FROM platform_once_history_offset WHERE ?',

@@ -12,13 +12,13 @@ use MySQLReplication\Definitions\ConstEventType;
  */
 class BinlogEnvConfig
 {
-    const TARGET_DB = 'target_db';
-    const HISTORY_WRITE_DB = 'history_write_db';
+    private const TARGET_DB = 'target_db';
+    public const HISTORY_WRITE_DB = 'history_write_db';
 
-    const CHILD_SLAVE_PREFIX_ID = '500';
-    const ONCE_CHILD_SLAVE_PREFIX_ID = '600';
-    const CHILD_TEMPORARY_SLAVE_ID = 999;
-    const ONCE_CHILD_TEMPORARY_SLAVE_ID = 998;
+    public const CHILD_SLAVE_PREFIX_ID = '500';
+    public const ONCE_CHILD_SLAVE_PREFIX_ID = '600';
+    public const CHILD_TEMPORARY_SLAVE_ID = 999;
+    public const ONCE_CHILD_TEMPORARY_SLAVE_ID = 998;
 
     /** @var bool */
     public $enable_sentry;
@@ -31,7 +31,7 @@ class BinlogEnvConfig
     /** @var RowEventValueSkipperInterface|null */
     public $row_event_value_skipper;
 
-    public static function getTargetBinlogDbParams()
+    public static function getTargetBinlogDbParams(): array
     {
         return [
             'host' => getenv('TARGET_DB_HOST'),
@@ -41,11 +41,11 @@ class BinlogEnvConfig
             'dbname' => getenv('TARGET_DB_DBNAME'),
             'driver' => getenv('TARGET_DB_DRIVER'),
             'charset' => getenv('TARGET_DB_CHARSET'),
-            'driverOptions' => [\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8']
+            'driverOptions' => [\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'],
         ];
     }
 
-    public static function getHistoryWriteDbParams()
+    public static function getHistoryWriteDbParams(): array
     {
         return [
             'host' => getenv('HISTORY_WRITE_DB_HOST'),
@@ -55,11 +55,11 @@ class BinlogEnvConfig
             'dbname' => getenv('HISTORY_WRITE_DB_DBNAME'),
             'driver' => getenv('HISTORY_WRITE_DB_DRIVER'),
             'charset' => getenv('HISTORY_WRITE_DB_CHARSET'),
-            'driverOptions' => [\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8']
+            'driverOptions' => [\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'],
         ];
     }
 
-    public static function getConnectionParams($name): array
+    public static function getConnectionParams(string $name): array
     {
         switch ($name) {
             case self::TARGET_DB:
@@ -73,9 +73,7 @@ class BinlogEnvConfig
 
     public static function importDefaultConfig(RowEventValueSkipperInterface $row_event_value_skipper = null): self
     {
-        $binlog_env_config = self::extendDefaultConfig([], $row_event_value_skipper);
-
-        return $binlog_env_config;
+        return self::extendDefaultConfig([], $row_event_value_skipper);
     }
 
     public static function extendDefaultConfig(
@@ -125,11 +123,11 @@ class BinlogEnvConfig
             'is_all_print_event' => false,
             'child_process_max_count' => 10,
             'once_processed_max_event_count_in_gtid' => 100,
-            'gtid_count_for_persist_per_partition' => 500
+            'gtid_count_for_persist_per_partition' => 500,
         ];
     }
 
-    public function validateTarget()
+    public function validateTarget(): void
     {
         if (count($this->binlog_connect_array['tablesOnly']) === 0) {
             throw new MsgException('tablesOnly is empty');

@@ -41,7 +41,7 @@ class BinlogPartitionerConfig
         return BinlogPartitionerConfig::importFromInit($connect_config, $binlog_config_array, $binlog_connect_array);
     }
 
-    public function validate()
+    public function validate(): void
     {
         if ($this->gtid_partition_max_count === 0) {
             throw new MsgException('gtid_partition_max_count is empty');

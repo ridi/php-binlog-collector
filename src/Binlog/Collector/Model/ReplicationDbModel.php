@@ -32,7 +32,7 @@ class ReplicationDbModel
                 'host' => $config->getHost(),
                 'port' => empty($config->getPort()) ? 3306 : $config->getPort(),
                 'driver' => 'pdo_mysql',
-                'charset' => $config->getCharset()
+                'charset' => $config->getCharset(),
             ]
         );
     }
@@ -47,7 +47,7 @@ class ReplicationDbModel
         return $this->connection;
     }
 
-    public function close()
+    public function close(): void
     {
         $this->connection->close();
     }

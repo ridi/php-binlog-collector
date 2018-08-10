@@ -22,8 +22,10 @@ class BinlogCollectorInfo
      * @param BinlogPartitionerConfig $partitioner_config
      * @param array                   $argv
      *
+     * @throws MsgException
+     * @throws \Throwable
      */
-    public function getInfo(Logger $logger, BinlogPartitionerConfig $partitioner_config, array $argv)
+    public function getInfo(Logger $logger, BinlogPartitionerConfig $partitioner_config, array $argv): void
     {
         $this->logger = $logger;
         try {
@@ -47,7 +49,7 @@ class BinlogCollectorInfo
         }
     }
 
-    private function printGtidToBinlogPos(array $connect_array, array $argv)
+    private function printGtidToBinlogPos(array $connect_array, array $argv): void
     {
         $replace_connect_array = [];
         if (count($argv) > 3 && $argv[3] !== 'current') {
@@ -117,7 +119,7 @@ class BinlogCollectorInfo
         throw new MsgException('wrong command');
     }
 
-    private function printGetInfoUsage(string $php_file)
+    private function printGetInfoUsage(string $php_file): void
     {
         print("##########################################################################################\n");
         print("Usage:\n");

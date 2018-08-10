@@ -26,11 +26,10 @@ class GnfConnectionProvider extends ConnectionProvider
 
     public static function createGnfConnection(string $group_name): base
     {
-        $connection = new PDO(parent::getConnection($group_name));
-        return $connection;
+        return new PDO(parent::getConnection($group_name));
     }
 
-    public static function closeAllConnections()
+    public static function closeAllConnections(): void
     {
         parent::closeAllConnections();
     }

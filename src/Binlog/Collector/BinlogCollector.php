@@ -46,6 +46,8 @@ class BinlogCollector
      * @param BinlogPartitionerConfig $partitioner_config
      * @param array                   $argv
      *
+     * @throws MsgException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     public function initialize(Logger $logger, BinlogPartitionerConfig $partitioner_config, array $argv)
     {
@@ -88,7 +90,7 @@ class BinlogCollector
         $logger->info("Existed PartitionCount: {$partition_count}");
     }
 
-    private function printChildGtidOffsetRanges(Logger $logger)
+    private function printChildGtidOffsetRanges(Logger $logger): void
     {
         $child_gtid_offset_range_dtos = $this->getChildGtidOffsetRanges();
         foreach ($child_gtid_offset_range_dtos as $i => $child_gtid_offset_range_dto) {
@@ -102,6 +104,7 @@ class BinlogCollector
      *
      * @return int
      * @throws MsgException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     private function processChangePosCommand(BinlogPartitionerConfig $partitioner_config, array $argv): int
     {
@@ -122,7 +125,7 @@ class BinlogCollector
         $last_gtid_offset_range_dto = $new_dtos[$new_dtos_count - 1];
         $parent_binlog_date = $this->getNextGtidFirstEventBinlogDate($last_gtid_offset_range_dto->end_dto);
         $this->binlog_history_service->transactional(
-            function () use ($new_dtos, $parent_binlog_date) {
+            function () use ($new_dtos, $parent_binlog_date): void {
                 $this->binlog_history_service->deleteAllChildGtidOffsetRanges();
                 $this->insertTotalBinlogOffsetRange($parent_binlog_date, $new_dtos);
             }
@@ -164,6 +167,7 @@ class BinlogCollector
      *
      * @return int
      * @throws MsgException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     private function processChangeRangePosCommand(BinlogPartitionerConfig $partitioner_config, array $argv): int
     {
@@ -192,7 +196,7 @@ class BinlogCollector
         $last_gtid_offset_range_dto = $new_dtos[$new_dtos_count - 1];
         $parent_binlog_date = $this->getNextGtidFirstEventBinlogDate($last_gtid_offset_range_dto->end_dto);
         $this->binlog_history_service->transactional(
-            function () use ($new_dtos, $parent_binlog_date) {
+            function () use ($new_dtos, $parent_binlog_date): void {
                 $this->binlog_history_service->deleteAllChildGtidOffsetRanges();
                 $this->insertTotalBinlogOffsetRange($parent_binlog_date, $new_dtos);
             }
@@ -304,6 +308,8 @@ class BinlogCollector
      * @param BinlogOffsetDto $start_binlog_offset_dto
      *
      * @return OnlyGtidOffsetRangeDto[]
+     * @throws MsgException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     private function calculateChildGtidOffsetRangeDtos(
         int $gtid_partition_max_count,
@@ -349,6 +355,8 @@ class BinlogCollector
      * @param BinlogOffsetDto $end_binlog_offset_dto
      *
      * @return OnlyGtidOffsetRangeDto[]
+     * @throws MsgException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     private function calculateChildGtidOffsetRangeDtosByRange(
         int $gtid_partition_max_count,
@@ -392,6 +400,7 @@ class BinlogCollector
      *
      * @return string
      * @throws MsgException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     private function getNextGtidFirstEventBinlogDate(OnlyBinlogOffsetDto $current_binlog_offset_dto): string
     {
@@ -404,7 +413,7 @@ class BinlogCollector
                 $this->binlog_connect_array,
                 [
                     'slaveId' => $this->binlog_history_service->getTemporarySlaveId(),
-                    'mariaDbGtid' => $gtid
+                    'mariaDbGtid' => $gtid,
                 ]
             );
             $binlog_stream = new MySQLReplicationFactory($config);

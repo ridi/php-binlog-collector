@@ -14,10 +14,9 @@ use Monolog\Logger;
  */
 class BinlogHistoryGtidUpdaterApplication
 {
-    const PARTITION_COUNT = 10;
-    const CHILD_ONCE_BINLOG_FETCH_LIMIT = 1000;
-    const MAX_COUNT_PER_CHILD = 100000;
-    const MIN_COUNT_PER_CHILD = 1000;
+    private const PARTITION_COUNT = 10;
+    private const MAX_COUNT_PER_CHILD = 100000;
+    private const MIN_COUNT_PER_CHILD = 1000;
 
     /** @var BinlogConfiguration */
     private $binlog_configuration;
@@ -30,7 +29,7 @@ class BinlogHistoryGtidUpdaterApplication
         $this->logger = $this->binlog_configuration->exception_handler->getLogger();
     }
 
-    public function executeUpdate()
+    public function executeUpdate(): void
     {
         $start_time = time();
         $this->logger->info('executeMain Started');
@@ -130,7 +129,7 @@ class BinlogHistoryGtidUpdaterApplication
         return $partition_binlog_range;
     }
 
-    public function executeChildProcessAndExit(int $partition_id, int $start_binlog_id, int $max_binlog_count)
+    public function executeChildProcessAndExit(int $partition_id, int $start_binlog_id, int $max_binlog_count): void
     {
         $connect_config = $this->binlog_configuration->createConnectConfig();
         $binlog_history_gtid_child_update = null;

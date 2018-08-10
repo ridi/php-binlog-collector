@@ -275,7 +275,7 @@ class BinlogHistoryModel extends BinlogHistoryBaseModel
     {
         $where = [
             'gtid' => '',
-            'id' => sqlLesser($id)
+            'id' => sqlLesser($id),
         ];
 
         return $this->db->sqlData(
@@ -285,7 +285,7 @@ class BinlogHistoryModel extends BinlogHistoryBaseModel
         );
     }
 
-    public function updateBinlogGtid(int $id, string $gtid)
+    public function updateBinlogGtid(int $id, string $gtid): int
     {
         $update = ['gtid' => $gtid];
         $where = ['id' => $id];

@@ -20,7 +20,7 @@ class OnceBinlogHistoryModel extends BinlogHistoryBaseModel
      */
     public function insertHistoryBulk(array $dtos): int
     {
-        if (count($dtos) == 0) {
+        if (count($dtos) === 0) {
             return 0;
         }
 
@@ -92,12 +92,7 @@ class OnceBinlogHistoryModel extends BinlogHistoryBaseModel
         );
     }
 
-    /**
-     * @param BinlogHistoryDto $dto
-     *
-     * @return string|null
-     */
-    private function getBinlogId(BinlogHistoryDto $dto)
+    private function getBinlogId(BinlogHistoryDto $dto): ?string
     {
         return $this->db->sqlData(
             'SELECT id FROM platform_once_history_3_binlog WHERE ?',
@@ -168,7 +163,7 @@ class OnceBinlogHistoryModel extends BinlogHistoryBaseModel
         );
     }
 
-    private function insertColumns(Collection $dtos)
+    private function insertColumns(Collection $dtos): void
     {
         $row_ids = $dtos->pluck('row_id')->unique()->all();
         $column_dicts = $this->getColumnDictsByRowIds($row_ids);
@@ -240,7 +235,7 @@ class OnceBinlogHistoryModel extends BinlogHistoryBaseModel
     {
         $where = [
             'gtid' => '',
-            'id' => sqlLesserEqual($id)
+            'id' => sqlLesserEqual($id),
         ];
 
         return $this->db->sqlDicts(
@@ -254,7 +249,7 @@ class OnceBinlogHistoryModel extends BinlogHistoryBaseModel
     {
         $where = [
             'gtid' => '',
-            'id' => sqlLesser($id)
+            'id' => sqlLesser($id),
         ];
 
         return $this->db->sqlDicts(
@@ -274,7 +269,7 @@ class OnceBinlogHistoryModel extends BinlogHistoryBaseModel
     {
         $where = [
             'gtid' => '',
-            'id' => sqlLesser($id)
+            'id' => sqlLesser($id),
         ];
 
         return $this->db->sqlData(
@@ -284,7 +279,7 @@ class OnceBinlogHistoryModel extends BinlogHistoryBaseModel
         );
     }
 
-    public function updateBinlogGtid(int $id, string $gtid)
+    public function updateBinlogGtid(int $id, string $gtid): int
     {
         $update = ['gtid' => $gtid];
         $where = ['id' => $id];

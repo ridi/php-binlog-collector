@@ -13,10 +13,11 @@ class BinlogRavenClient extends \Raven_Client
     /**
      * BinlogRavenClient constructor.
      *
-     * @param mixed  $options_or_dsn
-     * @param array  $options
+     * @param mixed $options_or_dsn
+     * @param array $options
      */
-    public function __construct($options_or_dsn = null, $options = []) {
+    public function __construct($options_or_dsn = null, $options = [])
+    {
         parent::__construct($options_or_dsn, $options);
     }
 
@@ -31,7 +32,8 @@ class BinlogRavenClient extends \Raven_Client
     public function captureException($exception, $data = null, $logger = null, $vars = null)
     {
         if ($exception instanceof BinlogException
-            && $exception->getMessage() === BinlogException::DISCONNECTED_MESSAGE) {
+            && $exception->getMessage() === BinlogException::DISCONNECTED_MESSAGE
+        ) {
             return;
         }
         $data['level'] = self::ERROR;

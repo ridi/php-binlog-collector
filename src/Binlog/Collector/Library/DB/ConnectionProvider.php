@@ -44,7 +44,7 @@ class ConnectionProvider
         return $connection;
     }
 
-    protected static function closeAllConnections()
+    protected static function closeAllConnections(): void
     {
         foreach (self::$connection_pool as $connection) {
             $connection->close();

@@ -13,9 +13,7 @@ use MySQLReplication\Config\Config;
  */
 class BinlogHistoryGtidChildUpdater
 {
-    const CHILD_ONCE_BINLOG_FETCH_LIMIT = 1000;
-    const MAX_COUNT_PER_CHILD = 100000;
-    const MIN_COUNT_PER_CHILD = 1000;
+    private const CHILD_ONCE_BINLOG_FETCH_LIMIT = 1000;
 
     /** @var ReplicationQuery */
     private $replication_query;
