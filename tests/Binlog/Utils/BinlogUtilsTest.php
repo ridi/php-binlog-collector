@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 
 class BinLogUtilsTest extends TestCase
 {
-    public function testCalculateNextSeqFile()
+    public function testCalculateNextSeqFile(): void
     {
         $actual = BinlogUtils::calculateNextSeqFile('mariadb-bin.000000');
         $this->assertEquals('mariadb-bin.000001', $actual);
@@ -21,7 +21,7 @@ class BinLogUtilsTest extends TestCase
         $this->assertEquals('mariadb-bin.000000', $actual);
     }
 
-    public function testCalculatePreviousSeqFile()
+    public function testCalculatePreviousSeqFile(): void
     {
         $actual = BinlogUtils::calculatePreviousSeqFile('mariadb-bin.000016');
         $this->assertEquals('mariadb-bin.000015', $actual);
@@ -33,7 +33,7 @@ class BinLogUtilsTest extends TestCase
         $this->assertEquals('mariadb-bin.999999', $actual);
     }
 
-    public function testConvertGtidBinLogInfoToGtid()
+    public function testConvertGtidBinLogInfoToGtid(): void
     {
         $gtid = explode(' ', trim(str_replace(['BEGIN', 'GTID'], '', 'GTID 0-43-14535494')))[0];
         $this->assertEquals('0-43-14535494', $gtid);
@@ -44,7 +44,7 @@ class BinLogUtilsTest extends TestCase
     }
 
 
-    public function testRemoveSkipServerId()
+    public function testRemoveSkipServerId(): void
     {
         $gtid = '0-146-1683252403,12-12-19056634,11-11-1887613118';
         $this->assertEquals('0-146-1683252403,11-11-1887613118,12-12-19056634', BinlogPosFinder::sortGtidList($gtid));
@@ -59,13 +59,13 @@ class BinLogUtilsTest extends TestCase
         $this->assertEquals('0-146-1683252403,12-12-19056634', $actual);
     }
 
-    public function testGetSeqByBinlogFileName()
+    public function testGetSeqByBinlogFileName(): void
     {
         $this->assertEquals(16, BinLogUtils::getSeqByBinlogFileName('mariadb-bin.000016'));
         $this->assertEquals(0, BinLogUtils::getSeqByBinlogFileName('mariadb-bin.000000'));
     }
 
-    public function testOnlyBinlogOffsetDtoCompareTo()
+    public function testOnlyBinlogOffsetDtoCompareTo(): void
     {
         $only_binlog_offset_dto = OnlyBinlogOffsetDto::importOnlyBinlogOffset('mariadb-bin.000001', 11111);
 
