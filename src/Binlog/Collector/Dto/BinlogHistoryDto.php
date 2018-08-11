@@ -4,10 +4,6 @@ namespace Binlog\Collector\Dto;
 
 use MySQLReplication\Definitions\ConstEventsNames;
 
-/**
- * Class BinlogHistoryDto
- * @package Binlog\Collector\Dto
- */
 class BinlogHistoryDto
 {
     /** @var int - bigint */
@@ -79,7 +75,7 @@ class BinlogHistoryDto
         $dict = [
             'binlog_filename' => $this->binlog_offset_dto->file_name,
             'gtid_end_pos' => $this->binlog_offset_dto->position,
-            'reg_date' =>$this->reg_date,
+            'reg_date' => $this->reg_date,
         ];
         if ($this->binlog_id !== null) {
             $dict['id'] = $this->binlog_id;

@@ -14,10 +14,6 @@ use Binlog\Collector\Subscriber\GetInitBinlogDateSubscriber;
 use Monolog\Logger;
 use MySQLReplication\MySQLReplicationFactory;
 
-/**
- * Class BinlogCollector
- * @package Binlog\Collector
- */
 class BinlogCollector
 {
     /** @var ReplicationQuery */
@@ -49,7 +45,7 @@ class BinlogCollector
      * @throws MsgException
      * @throws \Psr\SimpleCache\InvalidArgumentException
      */
-    public function initialize(Logger $logger, BinlogPartitionerConfig $partitioner_config, array $argv)
+    public function initialize(Logger $logger, BinlogPartitionerConfig $partitioner_config, array $argv): void
     {
         $this->logger = $logger;
         $this->binlog_connect_array = $partitioner_config->binlog_connect_array;
@@ -134,6 +130,14 @@ class BinlogCollector
         return count($new_dtos);
     }
 
+    /**
+     * @param Logger                  $logger
+     * @param BinlogPartitionerConfig $partitioner_config
+     *
+     * @return int
+     * @throws MsgException
+     * @throws \Psr\SimpleCache\InvalidArgumentException
+     */
     private function processContinue(Logger $logger, BinlogPartitionerConfig $partitioner_config): int
     {
         $existed_gtid_partition_count = $this->getChildGtidOffsetRangeCount();
@@ -205,12 +209,7 @@ class BinlogCollector
         return count($new_dtos);
     }
 
-    /**
-     * @param array $argv
-     *
-     * @throws MsgException
-     */
-    private function assertExecuteCommand(array $argv)
+    private function assertExecuteCommand(array $argv): void
     {
         if (count($argv) >= 2) {
             switch ($argv[1]) {
@@ -238,7 +237,7 @@ class BinlogCollector
         throw new MsgException('wrong command');
     }
 
-    private function printExecuteUsage(string $php_file)
+    private function printExecuteUsage(string $php_file): void
     {
         print("##########################################################################################\n");
         print("Usage:\n");
@@ -264,10 +263,10 @@ class BinlogCollector
      * @param string                   $parent_binlog_date
      * @param OnlyGtidOffsetRangeDto[] $gtid_offset_range_dtos
      */
-    private function insertTotalBinlogOffsetRange(string $parent_binlog_date, array $gtid_offset_range_dtos)
+    private function insertTotalBinlogOffsetRange(string $parent_binlog_date, array $gtid_offset_range_dtos): void
     {
         $this->binlog_history_service->transactional(
-            function () use ($gtid_offset_range_dtos, $parent_binlog_date) {
+            function () use ($gtid_offset_range_dtos, $parent_binlog_date): void {
                 foreach ($gtid_offset_range_dtos as $gtid_offset_range_dto) {
                     $this->binlog_history_service->insertChildGtidOffsetRange($gtid_offset_range_dto);
                 }
@@ -280,6 +279,10 @@ class BinlogCollector
         );
     }
 
+    /**
+     * @return BinlogOffsetDto
+     * @throws MsgException
+     */
     private function getParentBinlogOffset(): BinlogOffsetDto
     {
         $parent_binlog_offset_dto = $this->binlog_history_service->getParentBinlogOffset();
@@ -315,7 +318,6 @@ class BinlogCollector
         int $gtid_partition_max_count,
         BinlogOffsetDto $start_binlog_offset_dto
     ): array {
-
         //각각은 서로 최소 한개 이후의 GTID 위치를 보장
         $next_gtid_offset_dtos = $this->binlog_event_partition_service->calculateGtidOffsetDtos(
             $gtid_partition_max_count,
@@ -355,8 +357,6 @@ class BinlogCollector
      * @param BinlogOffsetDto $end_binlog_offset_dto
      *
      * @return OnlyGtidOffsetRangeDto[]
-     * @throws MsgException
-     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     private function calculateChildGtidOffsetRangeDtosByRange(
         int $gtid_partition_max_count,
@@ -399,8 +399,6 @@ class BinlogCollector
      * @param OnlyBinlogOffsetDto $current_binlog_offset_dto
      *
      * @return string
-     * @throws MsgException
-     * @throws \Psr\SimpleCache\InvalidArgumentException
      */
     private function getNextGtidFirstEventBinlogDate(OnlyBinlogOffsetDto $current_binlog_offset_dto): string
     {

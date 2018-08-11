@@ -14,12 +14,7 @@ class TimeMonitorService
         return BinlogTimeMonitorModel::createBinlogHistoryWrite()->insertTimeMonitor($monitor_dto);
     }
 
-    /**
-     * @param int $monitor_id
-     *
-     * @return TimeMonitorDto|null
-     */
-    public static function getTimeMonitor(int $monitor_id)
+    public static function getTimeMonitor(int $monitor_id): ?TimeMonitorDto
     {
         return BinlogTimeMonitorModel::createBinlogHistoryWrite()->getTimeMonitor($monitor_id);
     }
@@ -34,7 +29,7 @@ class TimeMonitorService
      *
      * @return string|null
      */
-    public static function getLastTimeMonitor(string $type)
+    public static function getLastTimeMonitor(string $type): ?string
     {
         return BinlogTimeMonitorModel::createBinlogHistoryWrite()->getLastTimeMonitor($type);
     }

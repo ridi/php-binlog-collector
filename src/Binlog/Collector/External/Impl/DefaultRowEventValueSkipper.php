@@ -4,10 +4,6 @@ namespace Binlog\Collector\External\Impl;
 
 use Binlog\Collector\External\AbstractRowEventValueSkipper;
 
-/**
- * Class DefaultRowEventValueSkipper
- * @package Binlog\Collector\External\Impl
- */
 class DefaultRowEventValueSkipper extends AbstractRowEventValueSkipper
 {
     public function isTargetEventValue(int $binlog_event_timestamp, string $table, string $type, array $value): bool

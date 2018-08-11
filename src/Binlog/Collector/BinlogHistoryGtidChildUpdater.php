@@ -7,10 +7,6 @@ use Binlog\Collector\Model\ReplicationDbModel;
 use Monolog\Logger;
 use MySQLReplication\Config\Config;
 
-/**
- * Class BinlogHistoryGtidChildUpdater
- * @package Binlog\Collector
- */
 class BinlogHistoryGtidChildUpdater
 {
     private const CHILD_ONCE_BINLOG_FETCH_LIMIT = 1000;
@@ -49,7 +45,7 @@ class BinlogHistoryGtidChildUpdater
         return $fetch_count;
     }
 
-    public function execute(int $last_binlog_id, int $max_binlog_count)
+    public function execute(int $last_binlog_id, int $max_binlog_count): void
     {
         $this->remain_binlog_count = $max_binlog_count;
         $fetch_count = $this->getFetchCount();
@@ -78,11 +74,6 @@ class BinlogHistoryGtidChildUpdater
         }
     }
 
-    /**
-     * @param array $dicts
-     *
-     * @return bool
-     */
     private function calculateGtidAndUpdate(array $dicts): bool
     {
         $new_dicts = self::sortDescendingByBinlogFileNameAndGtidEndPos($dicts);
@@ -127,7 +118,7 @@ class BinlogHistoryGtidChildUpdater
         return $dicts;
     }
 
-    public function close()
+    public function close(): void
     {
         $this->replication_db_model->close();
     }

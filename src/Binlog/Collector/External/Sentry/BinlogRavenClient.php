@@ -4,10 +4,6 @@ namespace Binlog\Collector\External\Sentry;
 
 use MySQLReplication\Binlog\Exception\BinlogException;
 
-/**
- * Class BinlogRavenClient
- * @package Binlog\Collector\External\Sentry
- */
 class BinlogRavenClient extends \Raven_Client
 {
     /**

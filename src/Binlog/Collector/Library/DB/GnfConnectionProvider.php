@@ -1,13 +1,10 @@
 <?php
+
 namespace Binlog\Collector\Library\DB;
 
 use Gnf\db\base;
 use Gnf\db\PDO;
 
-/**
- * Class GnfConnectionProvider
- * @package Binlog\Collector\Library\DB
- */
 class GnfConnectionProvider extends ConnectionProvider
 {
     /**

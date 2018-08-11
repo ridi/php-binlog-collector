@@ -2,10 +2,6 @@
 
 namespace Binlog\Collector\Dto;
 
-/**
- * Class OnlyGtidOffsetRangeDto
- * @package Binlog\Collector\Dto
- */
 class OnlyGtidOffsetRangeDto
 {
     /** @var int */

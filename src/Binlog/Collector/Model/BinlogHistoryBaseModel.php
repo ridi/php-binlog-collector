@@ -6,10 +6,6 @@ use Binlog\Collector\Config\BinlogEnvConfig;
 use Binlog\Collector\Library\DB\GnfConnectionProvider;
 use Gnf\db\base;
 
-/**
- * Class BinlogHistoryBaseModel
- * @package Binlog\Collector\Model
- */
 abstract class BinlogHistoryBaseModel
 {
     /**
@@ -40,7 +36,7 @@ abstract class BinlogHistoryBaseModel
         return self::create(GnfConnectionProvider::getGnfConnection(BinlogEnvConfig::HISTORY_WRITE_DB));
     }
 
-    public function transactional(callable $callable)
+    public function transactional(callable $callable): bool
     {
         return $this->db->transactional($callable);
     }

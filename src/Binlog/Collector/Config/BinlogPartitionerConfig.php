@@ -6,22 +6,18 @@ use Binlog\Collector\Exception\MsgException;
 use MySQLReplication\Config\Config;
 use MySQLReplication\Config\ConfigFactory;
 
-/**
- * Class BinlogPartitionerConfig
- * @package Binlog\Collector\Config
- */
 class BinlogPartitionerConfig
 {
     /** @var Config */
     public $connect_config;
-    /** @var array TODO Temporary */
+    /** @var array */
     public $binlog_connect_array;
 
     /** @var int */
     public $gtid_partition_max_count;
     /** @var int */
     public $jump_offset_for_next_partition;
-
+    
     private static function importFromInit(Config $connect_config, array $array, array $binlog_connect_array): self
     {
         $binlog_config = new self();
@@ -38,7 +34,7 @@ class BinlogPartitionerConfig
     {
         $connect_config = ConfigFactory::makeConfigFromArray($binlog_connect_array);
 
-        return BinlogPartitionerConfig::importFromInit($connect_config, $binlog_config_array, $binlog_connect_array);
+        return self::importFromInit($connect_config, $binlog_config_array, $binlog_connect_array);
     }
 
     public function validate(): void

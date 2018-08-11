@@ -11,10 +11,6 @@ use Binlog\Collector\Model\OnceBinlogHistoryChildOffsetModel;
 use Binlog\Collector\Model\OnceBinlogHistoryModel;
 use Binlog\Collector\Model\OnceBinlogHistoryParentOffsetModel;
 
-/**
- * Class OnceBinlogHistoryService
- * @package Binlog\Collector
- */
 class OnceBinlogHistoryService implements BinlogHistoryServiceInterface
 {
     public function getChildSlaveId(int $index): int
@@ -90,10 +86,7 @@ class OnceBinlogHistoryService implements BinlogHistoryServiceInterface
         return $child_offset_model->deleteChildGtidOffsetRangeById($child_index);
     }
 
-    /**
-     * @return string|null
-     */
-    public function getMinCurrentBinlogPositionDate()
+    public function getMinCurrentBinlogPositionDate(): ?string
     {
         $child_offset_model = OnceBinlogHistoryChildOffsetModel::createBinlogHistoryWrite();
 
@@ -121,10 +114,7 @@ class OnceBinlogHistoryService implements BinlogHistoryServiceInterface
         return $binlog_history_model->getEmptyGtidBinlogCount();
     }
 
-    /**
-     * @return int|null
-     */
-    public function getRecentEmptyGtidBinlogId()
+    public function getRecentEmptyGtidBinlogId(): ?string
     {
         $binlog_history_model = OnceBinlogHistoryModel::createBinlogHistoryWrite();
 
@@ -145,13 +135,7 @@ class OnceBinlogHistoryService implements BinlogHistoryServiceInterface
         return $binlog_history_model->getEmptyGtidBinlogDictsByLesserId($id, $limit);
     }
 
-    /**
-     * @param int $id
-     * @param int $offset
-     *
-     * @return int|null
-     */
-    public function getEmptyGtidBinlogIdByLesserIdAndOffset(int $id, int $offset)
+    public function getEmptyGtidBinlogIdByLesserIdAndOffset(int $id, int $offset): ?string
     {
         $binlog_history_model = OnceBinlogHistoryModel::createBinlogHistoryWrite();
 

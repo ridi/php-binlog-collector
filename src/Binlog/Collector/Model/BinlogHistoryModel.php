@@ -5,22 +5,16 @@ namespace Binlog\Collector\Model;
 use Binlog\Collector\Dto\BinlogHistoryDto;
 use Illuminate\Support\Collection;
 
-/**
- * Class BinlogHistoryModel
- * @package Binlog\Collector\Model
- */
 class BinlogHistoryModel extends BinlogHistoryBaseModel
 {
     /**
-     * insert Universal History Bulk
-     *
      * @param BinlogHistoryDto[] $dtos
      *
      * @return int
      */
     public function insertHistoryBulk(array $dtos): int
     {
-        if (count($dtos) == 0) {
+        if (count($dtos) === 0) {
             return 0;
         }
 
@@ -93,12 +87,7 @@ class BinlogHistoryModel extends BinlogHistoryBaseModel
         );
     }
 
-    /**
-     * @param BinlogHistoryDto $dto
-     *
-     * @return string|null
-     */
-    private function getBinlogId(BinlogHistoryDto $dto)
+    private function getBinlogId(BinlogHistoryDto $dto): ?string
     {
         return $this->db->sqlData(
             'SELECT id FROM platform_universal_history_3_binlog WHERE ?',
@@ -169,7 +158,7 @@ class BinlogHistoryModel extends BinlogHistoryBaseModel
         );
     }
 
-    private function insertColumns(Collection $dtos)
+    private function insertColumns(Collection $dtos): void
     {
         $row_ids = $dtos->pluck('row_id')->unique()->all();
         $column_dicts = $this->getColumnDictsByRowIds($row_ids);
@@ -223,10 +212,7 @@ class BinlogHistoryModel extends BinlogHistoryBaseModel
         return intval($this->db->sqlCount('platform_universal_history_3_binlog', $where));
     }
 
-    /**
-     * @return int|null
-     */
-    public function getRecentEmptyGtidBinlogId()
+    public function getRecentEmptyGtidBinlogId(): ?string
     {
         $where = ['gtid' => ''];
 
@@ -241,7 +227,7 @@ class BinlogHistoryModel extends BinlogHistoryBaseModel
     {
         $where = [
             'gtid' => '',
-            'id' => sqlLesserEqual($id)
+            'id' => sqlLesserEqual($id),
         ];
 
         return $this->db->sqlDicts(
@@ -255,7 +241,7 @@ class BinlogHistoryModel extends BinlogHistoryBaseModel
     {
         $where = [
             'gtid' => '',
-            'id' => sqlLesser($id)
+            'id' => sqlLesser($id),
         ];
 
         return $this->db->sqlDicts(
@@ -265,13 +251,7 @@ class BinlogHistoryModel extends BinlogHistoryBaseModel
         );
     }
 
-    /**
-     * @param int $id
-     * @param int $offset
-     *
-     * @return int|null
-     */
-    public function getEmptyGtidBinlogIdByLesserIdAndOffset(int $id, int $offset)
+    public function getEmptyGtidBinlogIdByLesserIdAndOffset(int $id, int $offset): ?string
     {
         $where = [
             'gtid' => '',
@@ -295,12 +275,12 @@ class BinlogHistoryModel extends BinlogHistoryBaseModel
 
     public function getBinlogCount(array $where): int
     {
-        return $this->db->sqlCount('platform_universal_history_3_binlog', $where);
+        return (int)$this->db->sqlCount('platform_universal_history_3_binlog', $where);
     }
 
     public function getBinlogRowCount(array $where): int
     {
-        return $this->db->sqlData(
+        return (int)$this->db->sqlData(
             "SELECT COUNT(*)
                 FROM platform_universal_history_3_binlog AS u_binlog
                 INNER JOIN platform_universal_history_3_row AS u_row
@@ -313,7 +293,7 @@ class BinlogHistoryModel extends BinlogHistoryBaseModel
 
     public function getBinlogColumnCount(array $where): int
     {
-        return $this->db->sqlData(
+        return (int)$this->db->sqlData(
             "SELECT COUNT(*)
                 FROM platform_universal_history_3_binlog AS u_binlog
                 INNER JOIN platform_universal_history_3_row AS u_row

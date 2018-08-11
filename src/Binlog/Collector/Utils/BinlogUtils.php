@@ -4,10 +4,6 @@ namespace Binlog\Collector\Utils;
 
 use Binlog\Collector\Exception\MsgException;
 
-/**
- * Class BinlogUtils
- * @package Binlog\Collector\Utils
- */
 class BinlogUtils
 {
     /**

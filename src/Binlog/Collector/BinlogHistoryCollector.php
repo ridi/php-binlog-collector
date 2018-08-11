@@ -2,16 +2,13 @@
 
 namespace Binlog\Collector;
 
-use Binlog\Collector\Dto\OnlyBinlogOffsetDto;
 use Binlog\Collector\Dto\BinlogHistoryDto;
+use Binlog\Collector\Dto\OnlyBinlogOffsetDto;
 use Binlog\Collector\External\RowEventValueSkipperInterface;
 use MySQLReplication\Definitions\ConstEventsNames;
+use MySQLReplication\Event\DTO\EventDTO;
 use MySQLReplication\Event\DTO\RowsDTO;
 
-/**
- * Class BinlogHistoryCollector
- * @package Binlog\Collector
- */
 class BinlogHistoryCollector
 {
     /** @var RowEventValueSkipperInterface */
@@ -24,7 +21,7 @@ class BinlogHistoryCollector
 
     /**
      * @param OnlyBinlogOffsetDto $binlog_offset_dto
-     * @param array               $events EventDTO[]
+     * @param EventDTO[]          $events
      *
      * @return BinlogHistoryDto[]
      */
@@ -109,7 +106,7 @@ class BinlogHistoryCollector
 
         $new_after = [];
 
-        foreach ($before as $key => $value) {
+        foreach ($before as $key => $val) {
             if ($before[$key] !== $after[$key]) {
                 $new_after[$key] = $after[$key];
             }

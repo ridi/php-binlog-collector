@@ -9,10 +9,6 @@ use Monolog\Handler\StreamHandler;
 use Monolog\Logger;
 use Raven_Client;
 
-/**
- * Class DefaultSentryExceptionHandler
- * @package Binlog\Collector\External\Impl
- */
 class DefaultSentryExceptionHandler implements ExceptionHandlerInterface
 {
     private const DEFAULT_RAVEN_CLIENT_NAME = '__RAVEN_CLIENT';
@@ -21,11 +17,18 @@ class DefaultSentryExceptionHandler implements ExceptionHandlerInterface
     /** @var Logger */
     private $logger;
 
+    /**
+     * DefaultSentryExceptionHandler constructor.
+     *
+     * @param string          $dir
+     * @param string          $name
+     * @param BinlogEnvConfig $binlog_env_config
+     */
     public function __construct(string $dir, string $name, BinlogEnvConfig $binlog_env_config)
     {
         $this->logger = self::createLogger($dir, $name);
         if ($binlog_env_config->enable_sentry) {
-            self::enableSentry($binlog_env_config->sentry_key);
+            $this->enableSentry($binlog_env_config->sentry_key);
         }
 
         set_error_handler(
@@ -61,6 +64,12 @@ class DefaultSentryExceptionHandler implements ExceptionHandlerInterface
         );
     }
 
+    /**
+     * @param string $dir
+     * @param string $name
+     *
+     * @return Logger
+     */
     private static function createLogger(string $dir, string $name): Logger
     {
         $file_name = 'cron_' . $name . self::LOG_FILE_NAME_EXTENSION;
@@ -81,11 +90,11 @@ class DefaultSentryExceptionHandler implements ExceptionHandlerInterface
 
     public function triggerException(\Exception $e): bool
     {
-        if (!self::hasRavenClientInitialized()) {
+        if (!$this->hasRavenClientInitialized()) {
             return false;
         }
 
-        $client = self::getRavenClient();
+        $client = $this->getRavenClient();
         if (!($client instanceof Raven_Client)) {
             return false;
         }
@@ -97,11 +106,11 @@ class DefaultSentryExceptionHandler implements ExceptionHandlerInterface
 
     public function triggerMessage(string $string, array $params = [], array $level_or_options = []): bool
     {
-        if (!self::hasRavenClientInitialized()) {
+        if (!$this->hasRavenClientInitialized()) {
             return false;
         }
 
-        $client = self::getRavenClient();
+        $client = $this->getRavenClient();
         if (!($client instanceof Raven_Client)) {
             return false;
         }
@@ -111,13 +120,9 @@ class DefaultSentryExceptionHandler implements ExceptionHandlerInterface
         return true;
     }
 
-    /**
-     *
-     * @return Raven_Client|null
-     */
-    private function getRavenClient()
+    private function getRavenClient(): ?Raven_Client
     {
-        return self::hasRavenClientInitialized() ? $GLOBALS[self::DEFAULT_RAVEN_CLIENT_NAME] : null;
+        return $this->hasRavenClientInitialized() ? $GLOBALS[self::DEFAULT_RAVEN_CLIENT_NAME] : null;
     }
 
     private function hasRavenClientInitialized(): bool

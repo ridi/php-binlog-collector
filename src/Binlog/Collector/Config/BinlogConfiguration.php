@@ -10,10 +10,6 @@ use Binlog\Collector\OnceBinlogHistoryService;
 use MySQLReplication\Config\Config;
 use MySQLReplication\Config\ConfigFactory;
 
-/**
- * Class BinlogConfiguration
- * @package Binlog\Collector\Config
- */
 class BinlogConfiguration
 {
     /** @var array */
@@ -27,15 +23,6 @@ class BinlogConfiguration
     /** @var RowEventValueSkipperInterface|null */
     public $row_event_value_skipper;
 
-    /**
-     * BinlogConfiguration constructor.
-     *
-     * @param BinlogEnvConfig                    $binlog_env_config
-     * @param ExceptionHandlerInterface          $exception_handler
-     * @param BinlogHistoryServiceInterface      $binlog_history_service
-     * @param RowEventValueSkipperInterface|null $row_event_value_skipper
-     * @param array                              $argv
-     */
     private function __construct(
         array $argv,
         BinlogEnvConfig $binlog_env_config,

@@ -17,10 +17,6 @@ use Binlog\Collector\Subscriber\InsertBinlogSubscriber;
 use Monolog\Logger;
 use MySQLReplication\MySQLReplicationFactory;
 
-/**
- * Class BinlogCollectorApplication
- * @package Binlog\Collector\Application
- */
 class BinlogCollectorApplication
 {
     /** @var BinlogConfiguration */
@@ -41,7 +37,7 @@ class BinlogCollectorApplication
             $this->logger->info("Initialize!");
             $collector_info = new BinlogCollectorInfo();
             $collector_info->getInfo($this->logger, $partitioner_config, $this->binlog_configuration->argv);
-        } catch (MsgException $e) {
+        } catch (\Throwable $e) {
             $this->logger->info($e->getMessage() . "\n");
         }
     }
@@ -53,7 +49,7 @@ class BinlogCollectorApplication
             $this->logger->info("Initialize!");
             $collector = new BinlogCollector($this->binlog_configuration->binlog_history_service);
             $collector->initialize($this->logger, $partitioner_config, $this->binlog_configuration->argv);
-        } catch (MsgException $e) {
+        } catch (\Throwable $e) {
             $this->logger->info($e->getMessage() . "\n");
         }
     }
@@ -65,7 +61,7 @@ class BinlogCollectorApplication
             $collector = new BinlogCollector($this->binlog_configuration->binlog_history_service);
             $gtid_offset_range_dtos = $collector->getChildGtidOffsetRanges();
             $this->logger->info('TotalGtidPartitions\'s Count: ' . count($gtid_offset_range_dtos));
-        } catch (MsgException $e) {
+        } catch (\Throwable $e) {
             $this->logger->info($e->getMessage() . "\n");
             exit();
         }
@@ -98,7 +94,7 @@ class BinlogCollectorApplication
          * 전체 child process를 loop 돌면서 기다림
          */
         $child_pid = pcntl_waitpid(0, $status);
-        while ($child_pid != -1) {
+        while ($child_pid !== -1) {
             GnfConnectionProvider::closeAllConnections();
             $status = pcntl_wexitstatus($status);
             // $this->logger->info("binlog_collector.cron: Child(status:{$status}): completed!\n");
@@ -110,7 +106,7 @@ class BinlogCollectorApplication
                 if ($pid === -1) {
                     $this->logger->info("binlog_collector.cron: Child fork failed!\n");
                     $i++;
-                } elseif ($pid == 0) {
+                } elseif ($pid === 0) {
                     $slave_id = $child_pid_to_slave_id[$child_pid];
                     $this->executeChildProcess($slave_id, $child_index, $worker_config, $gtid_offset_range_dto);
                 } elseif ($pid > 0) {

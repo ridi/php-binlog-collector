@@ -2,7 +2,15 @@
 
 namespace Binlog\Collector\Subscriber;
 
+use Binlog\Collector\BinlogEventCollector;
+use Binlog\Collector\BinlogHistoryCollector;
+use Binlog\Collector\Config\BinlogWorkerConfig;
+use Binlog\Collector\Dto\GtidOffsetRangeDto;
+use Binlog\Collector\Dto\OnlyBinlogOffsetDto;
+use Binlog\Collector\Exception\BinlogFinishedException;
+use Binlog\Collector\External\RowEventValueSkipperInterface;
 use Binlog\Collector\Interfaces\BinlogHistoryServiceInterface;
+use Binlog\Collector\ReplicationQuery;
 use Monolog\Logger;
 use MySQLReplication\Definitions\ConstEventsNames;
 use MySQLReplication\Event\DTO\EventDTO;
@@ -10,19 +18,7 @@ use MySQLReplication\Event\DTO\MariaDbGtidLogDTO;
 use MySQLReplication\Event\DTO\RotateDTO;
 use MySQLReplication\Event\DTO\XidDTO;
 use MySQLReplication\Event\EventSubscribers;
-use Binlog\Collector\BinlogEventCollector;
-use Binlog\Collector\BinlogHistoryCollector;
-use Binlog\Collector\Config\BinlogWorkerConfig;
-use Binlog\Collector\External\RowEventValueSkipperInterface;
-use Binlog\Collector\ReplicationQuery;
-use Binlog\Collector\Dto\GtidOffsetRangeDto;
-use Binlog\Collector\Dto\OnlyBinlogOffsetDto;
-use Binlog\Collector\Exception\BinlogFinishedException;
 
-/**
- * Class InsertBinlogSubscriber
- * @package Binlog\Collector\Subscriber
- */
 class InsertBinlogSubscriber extends EventSubscribers
 {
     /** @var Logger */
@@ -108,8 +104,8 @@ class InsertBinlogSubscriber extends EventSubscribers
                 $processed_gtid_count = $this->event_collector->getGtidCount();
 
                 throw new BinlogFinishedException(
-                    "child_index({$child_gtid_offset_range_dto->child_index}): ".
-                    "process finished".
+                    "child_index({$child_gtid_offset_range_dto->child_index}): " .
+                    "process finished" .
                     "({$child_gtid_offset_range_dto->start_dto}~{$child_gtid_offset_range_dto->end_dto})" .
                     ", processed({$this->event_collector->getElapsed()}s, gtidCount({$processed_gtid_count}), " .
                     "eventCount({$processed_event_count}), rowCount({$processed_row_count})"
@@ -121,7 +117,7 @@ class InsertBinlogSubscriber extends EventSubscribers
         }
     }
 
-    private function processEvents()
+    private function processEvents(): void
     {
         $binlog_offset_dto = $this->event_collector->getCurrentGtidOffsetDto();
         $events = $this->event_collector->getEvents();
@@ -132,7 +128,7 @@ class InsertBinlogSubscriber extends EventSubscribers
         }
         $binlog_history_dtos = $this->binlog_history_collector->collect($binlog_offset_dto, $events);
 
-        if($this->binlog_worker_config->is_all_print_event) {
+        if ($this->binlog_worker_config->is_all_print_event) {
             $this->printEventsInfo(
                 $this->binlog_worker_config->child_index,
                 $binlog_offset_dto,
@@ -155,7 +151,7 @@ class InsertBinlogSubscriber extends EventSubscribers
         int $event_count,
         int $universal_history_count,
         EventDto $first_event_dto
-    ) {
+    ): void {
         $event_count = sprintf("%03d", $event_count);
         $reg_date = $first_event_dto->getEventInfo()->getDateTime();
         $this->logger->info(

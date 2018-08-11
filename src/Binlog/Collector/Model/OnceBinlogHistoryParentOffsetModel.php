@@ -4,10 +4,6 @@ namespace Binlog\Collector\Model;
 
 use Binlog\Collector\Dto\OnlyBinlogOffsetDto;
 
-/**
- * Class OnceBinlogHistoryParentOffsetModel
- * @package Binlog\Collector\Model
- */
 class OnceBinlogHistoryParentOffsetModel extends BinlogHistoryBaseModel
 {
     private const CURRENT_OFFSET = 0;

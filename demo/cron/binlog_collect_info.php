@@ -15,7 +15,7 @@ if (!$lock->tryLock()) {
 $env_config = BinlogEnvConfig::extendDefaultConfig(
     [
         'gtid_partition_max_count' => 250,
-        'jump_offset_for_next_partition' => 1000
+        'jump_offset_for_next_partition' => 1000,
     ]
 );
 $exception_handler = new DefaultSentryExceptionHandler('./', 'binlog_collector', $env_config);
@@ -25,6 +25,3 @@ $application = new BinlogCollectorApplication($configuration);
 $application->getInfo();
 
 $lock->unlock();
-
-
-

@@ -8,10 +8,6 @@ use Binlog\Collector\Exception\MsgException;
 use Binlog\Collector\Library\DB\GnfConnectionProvider;
 use Monolog\Logger;
 
-/**
- * Class BinlogHistoryGtidUpdaterApplication
- * @package Binlog\Collector\Application
- */
 class BinlogHistoryGtidUpdaterApplication
 {
     private const PARTITION_COUNT = 10;
@@ -58,7 +54,7 @@ class BinlogHistoryGtidUpdaterApplication
              * 전체 child process를 loop 돌면서 기다림
              */
             $child_pid = pcntl_waitpid(0, $status);
-            while ($child_pid != -1) {
+            while ($child_pid !== -1) {
                 $status = pcntl_wexitstatus($status);
                 $partition_id = $child_pid_to_partition_id[$child_pid];
                 $this->logger->info(

@@ -11,10 +11,6 @@ use Binlog\Collector\Model\BinlogHistoryChildOffsetModel;
 use Binlog\Collector\Model\BinlogHistoryModel;
 use Binlog\Collector\Model\BinlogHistoryParentOffsetModel;
 
-/**
- * Class BinlogHistoryService
- * @package Binlog\Collector
- */
 class BinlogHistoryService implements BinlogHistoryServiceInterface
 {
     public function getChildSlaveId(int $index): int
@@ -98,8 +94,6 @@ class BinlogHistoryService implements BinlogHistoryServiceInterface
     }
 
     /**
-     * insert Universal History Bulk
-     *
      * @param BinlogHistoryDto[] $dtos
      *
      * @return int
@@ -118,10 +112,7 @@ class BinlogHistoryService implements BinlogHistoryServiceInterface
         return $binlog_history_model->getEmptyGtidBinlogCount();
     }
 
-    /**
-     * @return int|null
-     */
-    public function getRecentEmptyGtidBinlogId()
+    public function getRecentEmptyGtidBinlogId(): ?string
     {
         $binlog_history_model = BinlogHistoryModel::createBinlogHistoryWrite();
 
@@ -142,20 +133,14 @@ class BinlogHistoryService implements BinlogHistoryServiceInterface
         return $binlog_history_model->getEmptyGtidBinlogDictsByLesserId($id, $limit);
     }
 
-    /**
-     * @param int $id
-     * @param int $offset
-     *
-     * @return int|null
-     */
-    public function getEmptyGtidBinlogIdByLesserIdAndOffset(int $id, int $offset)
+    public function getEmptyGtidBinlogIdByLesserIdAndOffset(int $id, int $offset): ?string
     {
         $binlog_history_model = BinlogHistoryModel::createBinlogHistoryWrite();
 
         return $binlog_history_model->getEmptyGtidBinlogIdByLesserIdAndOffset($id, $offset);
     }
 
-    public function updateBinlogGtid(int $id, string $gtid)
+    public function updateBinlogGtid(int $id, string $gtid): void
     {
         $binlog_history_model = BinlogHistoryModel::createBinlogHistoryWrite();
 
@@ -169,15 +154,11 @@ class BinlogHistoryService implements BinlogHistoryServiceInterface
         return $parent_offset_model->getParentBinlogOffset();
     }
 
-    /**
-     * @return string|null
-     */
-    public function getParentBinlogDate()
+    public function getParentBinlogDate(): ?string
     {
         $parent_offset_model = BinlogHistoryParentOffsetModel::createBinlogHistoryWrite();
 
         return $parent_offset_model->getParentBinlogDate();
-
     }
 
     public function upsertParentBinlogOffset(OnlyBinlogOffsetDto $binlog_offset_dto, string $binlog_date = null): int

@@ -14,12 +14,7 @@ class BinlogTimeMonitorModel extends BinlogHistoryBaseModel
         return $this->db->insert_id();
     }
 
-    /**
-     * @param int $id
-     *
-     * @return TimeMonitorDto|null
-     */
-    public function getTimeMonitor(int $id)
+    public function getTimeMonitor(int $id): ?TimeMonitorDto
     {
         $dict = $this->db->sqlDict('SELECT * FROM platform_time_monitor WHERE ?', sqlWhere(['id' => $id]));
 
@@ -36,7 +31,7 @@ class BinlogTimeMonitorModel extends BinlogHistoryBaseModel
      *
      * @return string|null
      */
-    public function getLastTimeMonitor(string $type)
+    public function getLastTimeMonitor(string $type): ?string
     {
         $where = ['type' => $type];
 

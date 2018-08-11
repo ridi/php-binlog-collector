@@ -5,15 +5,9 @@ namespace Binlog\Collector\Model;
 use Binlog\Collector\Dto\BinlogHistoryDto;
 use Illuminate\Support\Collection;
 
-/**
- * Class OnceBinlogHistoryModel
- * @package Binlog\Collector\Model
- */
 class OnceBinlogHistoryModel extends BinlogHistoryBaseModel
 {
     /**
-     * insert Universal History Bulk
-     *
      * @param BinlogHistoryDto[] $dtos
      *
      * @return int
@@ -217,10 +211,7 @@ class OnceBinlogHistoryModel extends BinlogHistoryBaseModel
         return intval($this->db->sqlCount('platform_once_history_3_binlog', $where));
     }
 
-    /**
-     * @return int|null
-     */
-    public function getRecentEmptyGtidBinlogId()
+    public function getRecentEmptyGtidBinlogId(): ?string
     {
         $where = ['gtid' => ''];
 
@@ -259,13 +250,7 @@ class OnceBinlogHistoryModel extends BinlogHistoryBaseModel
         );
     }
 
-    /**
-     * @param int $id
-     * @param int $offset
-     *
-     * @return int|null
-     */
-    public function getEmptyGtidBinlogIdByLesserIdAndOffset(int $id, int $offset)
+    public function getEmptyGtidBinlogIdByLesserIdAndOffset(int $id, int $offset): ?string
     {
         $where = [
             'gtid' => '',

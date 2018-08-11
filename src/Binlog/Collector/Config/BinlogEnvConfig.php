@@ -6,10 +6,6 @@ use Binlog\Collector\Exception\MsgException;
 use Binlog\Collector\External\RowEventValueSkipperInterface;
 use MySQLReplication\Definitions\ConstEventType;
 
-/**
- * Class BinlogEnvConfig
- * @package Binlog\Collector\Config
- */
 class BinlogEnvConfig
 {
     private const TARGET_DB = 'target_db';
@@ -68,7 +64,7 @@ class BinlogEnvConfig
                 return self::getHistoryWriteDbParams();
         }
 
-        throw new \Exception("{$name} DB connection parameters are missing.");
+        throw new MsgException("{$name} DB connection parameters are missing.");
     }
 
     public static function importDefaultConfig(RowEventValueSkipperInterface $row_event_value_skipper = null): self

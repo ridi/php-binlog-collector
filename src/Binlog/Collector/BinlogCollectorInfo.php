@@ -8,23 +8,11 @@ use Binlog\Collector\Exception\MsgException;
 use Binlog\Collector\Model\ReplicationDbModel;
 use Monolog\Logger;
 
-/**
- * Class BinlogCollectorInfo
- * @package Binlog\Collector
- */
 class BinlogCollectorInfo
 {
     /** @var Logger */
     private $logger;
 
-    /**
-     * @param Logger                  $logger
-     * @param BinlogPartitionerConfig $partitioner_config
-     * @param array                   $argv
-     *
-     * @throws MsgException
-     * @throws \Throwable
-     */
     public function getInfo(Logger $logger, BinlogPartitionerConfig $partitioner_config, array $argv): void
     {
         $this->logger = $logger;
@@ -90,21 +78,18 @@ class BinlogCollectorInfo
             $replication_db_model->close();
         } catch (\Throwable $e) {
             $this->logger->info("error: " . $e->getMessage());
-            throw $e;
+            throw new MsgException($e->getMessage());
         }
     }
 
-    /**
-     * @param array $argv
-     *
-     * @throws MsgException
-     */
-    private function assertInfoCommand(array $argv)
+    private function assertInfoCommand(array $argv): void
     {
-        if (count($argv) >= 2) {
+        $count = count($argv);
+
+        if ($count >= 2) {
             switch ($argv[1]) {
                 case 'gtid_to_binlog_pos':
-                    if (count($argv) < 3 || 6 < count($argv)) {
+                    if ($count < 3 || 6 < $count) {
                         throw new MsgException('wrong command');
                     }
 

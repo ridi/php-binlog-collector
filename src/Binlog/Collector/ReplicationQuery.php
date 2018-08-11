@@ -8,10 +8,6 @@ use Binlog\Collector\Exception\MsgException;
 use Binlog\Collector\Model\ReplicationDbModel;
 use Binlog\Collector\Utils\BinlogUtils;
 
-/**
- * Class ReplicationQuery
- * @package Binlog\Collector
- */
 class ReplicationQuery
 {
     /** @var ReplicationDbModel */
@@ -22,6 +18,14 @@ class ReplicationQuery
         $this->replication_db_model = $replication_db_model;
     }
 
+    /**
+     * @param string $file_name
+     * @param int    $position
+     * @param bool   $use_strict_check
+     *
+     * @return OnlyBinlogOffsetDto
+     * @throws MsgException
+     */
     public function convertToOnlyBinlogOffsetDto(
         string $file_name,
         int $position,
@@ -37,6 +41,13 @@ class ReplicationQuery
         return OnlyBinlogOffsetDto::importOnlyBinlogOffset($file_name, $position);
     }
 
+    /**
+     * @param string $file_name
+     * @param int    $position
+     *
+     * @return BinlogOffsetDto
+     * @throws MsgException
+     */
     public function convertToBinlogOffsetDto(string $file_name, int $position): BinlogOffsetDto
     {
         $mariadb_gtid = $this->getMariaDbGtid($file_name, $position);
@@ -47,6 +58,13 @@ class ReplicationQuery
         return BinlogOffsetDto::importBinlogOffset($mariadb_gtid, $file_name, $position);
     }
 
+    /**
+     * @param string $file_name
+     * @param int    $position
+     *
+     * @return string
+     * @throws MsgException
+     */
     private function getMariaDbGtid(string $file_name, int $position): string
     {
         if ($this->replication_db_model === null) {
@@ -56,6 +74,10 @@ class ReplicationQuery
         return $this->replication_db_model->getBinlogGtidPos($file_name, $position);
     }
 
+    /**
+     * @return BinlogOffsetDto
+     * @throws MsgException
+     */
     public function getMasterBinlogOffset(): BinlogOffsetDto
     {
         $result = $this->replication_db_model->showMasterStatus();
@@ -81,7 +103,11 @@ class ReplicationQuery
         return $this->replication_db_model->getBinlogGtidPos($binlog_filename, $binlog_offset);
     }
 
-    public function assertCheckAuth()
+    /**
+     * assertCheckAuth
+     * @throws MsgException
+     */
+    public function assertCheckAuth(): void
     {
         $result = $this->replication_db_model->showMasterStatus();
         if (empty($result)) {
@@ -91,7 +117,13 @@ class ReplicationQuery
         $this->replication_db_model->showBinlogEventsUsingThrowException($log_name);
     }
 
-    public function assertSelectTables(array $target_table_schemas, array $target_table_names)
+    /**
+     * @param string[] $target_table_schemas
+     * @param string[] $target_table_names
+     *
+     * @throws MsgException
+     */
+    public function assertSelectTables(array $target_table_schemas, array $target_table_names): void
     {
         $table_names = $this->replication_db_model->getTableNames($target_table_schemas);
         $tables_names = collect($table_names)->pluck('TABLE_NAME')->all();

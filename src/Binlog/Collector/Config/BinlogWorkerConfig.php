@@ -6,10 +6,6 @@ use Binlog\Collector\Exception\MsgException;
 use MySQLReplication\Config\Config;
 use MySQLReplication\Config\ConfigFactory;
 
-/**
- * Class BinlogWorkerConfig
- * @package Binlog\Collector\Config
- */
 class BinlogWorkerConfig
 {
     /** @var Config */
@@ -45,10 +41,10 @@ class BinlogWorkerConfig
     {
         $connect_config = ConfigFactory::makeConfigFromArray($binlog_connect_array);
 
-        return BinlogWorkerConfig::importFromInit($connect_config, $binlog_config_array);
+        return self::importFromInit($connect_config, $binlog_config_array);
     }
 
-    public function validate()
+    public function validate(): void
     {
         if ($this->child_process_max_count === 0) {
             throw new MsgException('child_process_max_count is empty');

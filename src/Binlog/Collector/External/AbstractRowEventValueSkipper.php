@@ -2,15 +2,9 @@
 
 namespace Binlog\Collector\External;
 
-/**
- * Class AbstractRowEventValueSkipper
- * @package Binlog\Collector\External
- */
 abstract class AbstractRowEventValueSkipper implements RowEventValueSkipperInterface
 {
-    /**
-     * @var string[]
-     */
+    /** @var string[] */
     private $target_tables;
 
     /** @var string[] */
@@ -19,8 +13,8 @@ abstract class AbstractRowEventValueSkipper implements RowEventValueSkipperInter
     /**
      * DefaultRowEventValueSkipper constructor.
      *
-     * @param array $target_tables
-     * @param array $target_databases
+     * @param string[] $target_tables
+     * @param string[] $target_databases
      */
     public function __construct(array $target_tables, array $target_databases)
     {
@@ -28,11 +22,17 @@ abstract class AbstractRowEventValueSkipper implements RowEventValueSkipperInter
         $this->target_databases = $target_databases;
     }
 
+    /**
+     * @return string[]
+     */
     public function getTablesOnly(): array
     {
         return $this->target_tables;
     }
 
+    /**
+     * @return string[]
+     */
     public function getDatabasesOnly(): array
     {
         return $this->target_databases;

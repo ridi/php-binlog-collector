@@ -5,10 +5,6 @@ namespace Binlog\Collector\Model;
 use Binlog\Collector\Dto\OnlyBinlogOffsetDto;
 use Binlog\Collector\Dto\OnlyGtidOffsetRangeDto;
 
-/**
- * Class BinlogHistoryChildOffsetModel
- * @package Binlog\Collector\Model
- */
 class BinlogHistoryChildOffsetModel extends BinlogHistoryBaseModel
 {
     /**
@@ -79,6 +75,8 @@ class BinlogHistoryChildOffsetModel extends BinlogHistoryBaseModel
 
     public function getMinCurrentBinlogPositionDate(): ?string
     {
-        return $this->db->sqlData('SELECT MIN(current_bin_log_position_date) FROM platform_universal_history_child_offset');
+        return $this->db->sqlData(
+            'SELECT MIN(current_bin_log_position_date) FROM platform_universal_history_child_offset'
+        );
     }
 }

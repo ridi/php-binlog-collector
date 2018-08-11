@@ -2,10 +2,6 @@
 
 namespace Binlog\Collector;
 
-/**
- * Class BinlogCollectorService
- * @package Binlog\Collector
- */
 class BinlogCollectorService
 {
     public static function getGuaranteedEventFinishedDate(): string

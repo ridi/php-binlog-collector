@@ -4,10 +4,6 @@ namespace Binlog\Collector\External;
 
 use Monolog\Logger;
 
-/**
- * interface ExceptionHandlerInterface
- * @package Binlog\Collector\External
- */
 interface ExceptionHandlerInterface
 {
     public function getLogger(): Logger;
