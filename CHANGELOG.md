@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 - upgrade php-mysql-replication v5.0.3
 -- configService -> ConfigFactory
 -- mySQLReplicationFactory() -> MySQLReplicationFactory($config);
+-- update using BinlogException
 
 ## [1.0.3] - 2018-01-02
 

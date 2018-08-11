@@ -2,7 +2,8 @@
 
 namespace Binlog\Collector\External\Sentry;
 
-use MySQLReplication\Binlog\Exception\BinlogException;
+use MySQLReplication\BinLog\BinLogException;
+use MySQLReplication\Exception\MySQLReplicationException;
 
 class BinlogRavenClient extends \Raven_Client
 {
@@ -27,8 +28,8 @@ class BinlogRavenClient extends \Raven_Client
      */
     public function captureException($exception, $data = null, $logger = null, $vars = null)
     {
-        if ($exception instanceof BinlogException
-            && $exception->getMessage() === BinlogException::DISCONNECTED_MESSAGE
+        if ($exception instanceof BinLogException
+            && $exception->getMessage() === MySQLReplicationException::DISCONNECTED_MESSAGE
         ) {
             return;
         }

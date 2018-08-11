@@ -9,7 +9,6 @@ use Binlog\Collector\Config\BinlogWorkerConfig;
 use Binlog\Collector\Dto\GtidOffsetRangeDto;
 use Binlog\Collector\Dto\OnlyGtidOffsetRangeDto;
 use Binlog\Collector\Exception\BinlogFinishedException;
-use Binlog\Collector\Exception\MsgException;
 use Binlog\Collector\Library\DB\GnfConnectionProvider;
 use Binlog\Collector\Model\ReplicationDbModel;
 use Binlog\Collector\ReplicationQuery;
