@@ -7,7 +7,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 ## [1.1.0]
 
 ### CHANGED
-- upgrade php-mysql-replication v5.0.3
+- upgrade php-mysql-replication v5.0.4
 -- configService -> ConfigFactory
 -- mySQLReplicationFactory() -> MySQLReplicationFactory($config);
 -- update using BinlogException
