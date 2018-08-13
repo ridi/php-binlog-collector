@@ -18,9 +18,9 @@ class BinlogPosFinder
     /** @var int */
     private $limit_previous_file_count;
 
-    const ROW_COUNT = 100000;
+    private const ROW_COUNT = 100000;
 
-    const NO_SKIP_SERVER_ID = 'none';
+    private const NO_SKIP_SERVER_ID = 'none';
 
     public function __construct(Logger $logger, ReplicationDbModel $replication_db_model)
     {
@@ -42,7 +42,7 @@ class BinlogPosFinder
         string $target_gtid,
         string $skip_server_id = self::NO_SKIP_SERVER_ID,
         int $limit_previous_file_count = 5
-    ) {
+    ): ?BinlogOffsetDto {
         $target_gtids = explode(',', $target_gtid);
         $this->previous_file_count = 1;
         $this->limit_previous_file_count = $limit_previous_file_count;
@@ -87,10 +87,7 @@ class BinlogPosFinder
 
             $previous_pos = $next_pos;
             $previous_binlog_file_name = $binlog_file_name;
-            list(
-                $dicts, $binlog_file_name
-                ) =
-                $this->getNextEventDictsAndPreviousFile($binlog_file_name, $next_pos, true);
+            [$dicts, $binlog_file_name] = $this->getNextEventDictsAndPreviousFile($binlog_file_name, $next_pos, true);
 
             $dict_count = count($dicts);
         }
@@ -102,10 +99,9 @@ class BinlogPosFinder
     {
         if ($skip_server_id === self::NO_SKIP_SERVER_ID) {
             return self::sortGtidList($target_gtid) === self::sortGtidList($found_gtid);
-        } else {
-            return self::removeSkipServerId($target_gtid, $skip_server_id)
-                === self::removeSkipServerId($found_gtid, $skip_server_id);
         }
+        return self::removeSkipServerId($target_gtid, $skip_server_id)
+            === self::removeSkipServerId($found_gtid, $skip_server_id);
     }
 
     public static function sortGtidList(string $gtid_list): string
@@ -143,7 +139,8 @@ class BinlogPosFinder
         $dicts = $this->replication_db_model->showBinlogEvents($binlog_file_name, $pos, 0, self::ROW_COUNT);
         if (count($dicts) === 0
             && $use_previous_seq_if_failed
-            && $this->previous_file_count < $this->limit_previous_file_count) {
+            && $this->previous_file_count < $this->limit_previous_file_count
+        ) {
             $this->previous_file_count++;
             $binlog_file_name = BinlogUtils::calculatePreviousSeqFile($binlog_file_name);
             $dicts = $this->replication_db_model->showBinlogEventsFromInit($binlog_file_name, 0, self::ROW_COUNT);

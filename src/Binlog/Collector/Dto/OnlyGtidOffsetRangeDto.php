@@ -2,10 +2,6 @@
 
 namespace Binlog\Collector\Dto;
 
-/**
- * Class OnlyGtidOffsetRangeDto
- * @package Binlog\Collector\Dto
- */
 class OnlyGtidOffsetRangeDto
 {
     /** @var int */
@@ -47,7 +43,7 @@ class OnlyGtidOffsetRangeDto
             'current_bin_log_position' => $this->current_dto->position,
             'end_bin_log_file_name' => $this->end_dto->file_name,
             'end_bin_log_position' => $this->end_dto->position,
-            'current_bin_log_position_date' => $this->current_date
+            'current_bin_log_position_date' => $this->current_date,
         ];
     }
 

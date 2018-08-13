@@ -1,13 +1,10 @@
 <?php
+
 namespace Binlog\Collector\Library\DB;
 
 use Gnf\db\base;
 use Gnf\db\PDO;
 
-/**
- * Class GnfConnectionProvider
- * @package Binlog\Collector\Library\DB
- */
 class GnfConnectionProvider extends ConnectionProvider
 {
     /**
@@ -26,11 +23,10 @@ class GnfConnectionProvider extends ConnectionProvider
 
     public static function createGnfConnection(string $group_name): base
     {
-        $connection = new PDO(parent::getConnection($group_name));
-        return $connection;
+        return new PDO(parent::getConnection($group_name));
     }
 
-    public static function closeAllConnections()
+    public static function closeAllConnections(): void
     {
         parent::closeAllConnections();
     }

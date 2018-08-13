@@ -2,10 +2,8 @@
 
 namespace Binlog\Collector;
 
-/**
- * Class BinlogCollectorService
- * @package Binlog\Collector
- */
+use Binlog\Collector\Exception\MsgException;
+
 class BinlogCollectorService
 {
     public static function getGuaranteedEventFinishedDate(): string
@@ -17,6 +15,12 @@ class BinlogCollectorService
             return $min_current_binlog_position_date;
         }
 
-        return $binlog_history_service->getParentBinlogDate();
+        $parent_binlog_date =  $binlog_history_service->getParentBinlogDate();
+
+        if ($parent_binlog_date === null) {
+            throw new MsgException('not existed parent_binlog_date');
+        }
+
+        return $parent_binlog_date;
     }
 }

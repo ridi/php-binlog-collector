@@ -4,10 +4,6 @@ namespace Binlog\Collector\Dto;
 
 use Binlog\Collector\Utils\BinlogUtils;
 
-/**
- * Class OnlyBinlogOffsetDto
- * @package Binlog\Collector\Dto
- */
 class OnlyBinlogOffsetDto
 {
     /** @var string */
@@ -34,9 +30,9 @@ class OnlyBinlogOffsetDto
     {
         if ($this->date === null) {
             return "[{$this->file_name}/{$this->position}]";
-        } else {
-            return "[{$this->date}/{$this->file_name}/{$this->position}]";
         }
+
+        return "[{$this->date}/{$this->file_name}/{$this->position}]";
     }
 
     public function getBinlogKey(): string
@@ -60,13 +56,15 @@ class OnlyBinlogOffsetDto
 
         if ($current_seq < $target_seq) {
             return -1;
-        } elseif ($current_seq > $target_seq) {
+        }
+        if ($current_seq > $target_seq) {
             return 1;
         }
 
         if ($this->position < $targetDto->position) {
             return -1;
-        } elseif ($this->position > $targetDto->position) {
+        }
+        if ($this->position > $targetDto->position) {
             return 1;
         }
 

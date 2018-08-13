@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 
 class BinlogConfigurationTest extends TestCase
 {
-    public function testCreateConnectConfigWithReplace()
+    public function testCreateConnectConfigWithReplace(): void
     {
         $tables_only = ['table'];
         $databases_only = ['database'];
@@ -19,18 +19,16 @@ class BinlogConfigurationTest extends TestCase
             [],
             new DefaultRowEventValueSkipper($tables_only, $databases_only)
         );
-        $exception_handler = new DefaultSentryExceptionHandler(
-            './', 'binlog_collector', $binlog_env_config
-        );
+        $exception_handler = new DefaultSentryExceptionHandler('./', 'binlog_collector', $binlog_env_config);
 
         $binlog_configuration = BinlogConfiguration::newInstanceForOnce([], $binlog_env_config, $exception_handler);
         $new_binlog_worker_config = $binlog_configuration->extendWorkerConfig(
             [
                 'slaveId' => '999',
-                'ip' => '127.0.0.2'
+                'ip' => '127.0.0.2',
             ],
             [
-                'child_index' => 1
+                'child_index' => 1,
             ]
         );
         $this->assertEquals('127.0.0.2', $new_binlog_worker_config->connect_config->getHost());

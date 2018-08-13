@@ -5,10 +5,6 @@ namespace Binlog\Collector\Model;
 use Binlog\Collector\Dto\OnlyBinlogOffsetDto;
 use Binlog\Collector\Dto\OnlyGtidOffsetRangeDto;
 
-/**
- * Class BinlogHistoryChildOffsetModel
- * @package Binlog\Collector\Model
- */
 class BinlogHistoryChildOffsetModel extends BinlogHistoryBaseModel
 {
     /**
@@ -45,7 +41,7 @@ class BinlogHistoryChildOffsetModel extends BinlogHistoryBaseModel
             'current_bin_log_position' => $current_binlog_offset_dto->position,
             'end_bin_log_file_name' => $end_gtid_offset_dto->file_name,
             'end_bin_log_position' => $end_gtid_offset_dto->position,
-            'current_bin_log_position_date' => $current_binlog_offset_date
+            'current_bin_log_position_date' => $current_binlog_offset_date,
         ];
 
         return $this->db->sqlInsertOrUpdate('platform_universal_history_child_offset', $array);
@@ -62,7 +58,7 @@ class BinlogHistoryChildOffsetModel extends BinlogHistoryBaseModel
     public function deleteAllChildGtidOffsetRanges(): int
     {
         $where = [
-            'child_index' => sqlNot('')
+            'child_index' => sqlNot(''),
         ];
 
         return $this->db->sqlDelete('platform_universal_history_child_offset', $where);
@@ -71,17 +67,16 @@ class BinlogHistoryChildOffsetModel extends BinlogHistoryBaseModel
     public function deleteChildGtidOffsetRangeById(int $child_index): int
     {
         $where = [
-            'child_index' => $child_index
+            'child_index' => $child_index,
         ];
 
         return $this->db->sqlDelete('platform_universal_history_child_offset', $where);
     }
 
-    /**
-     * @return string|null
-     */
-    public function getMinCurrentBinlogPositionDate()
+    public function getMinCurrentBinlogPositionDate(): ?string
     {
-        return $this->db->sqlData('SELECT MIN(current_bin_log_position_date) FROM platform_universal_history_child_offset');
+        return $this->db->sqlData(
+            'SELECT MIN(current_bin_log_position_date) FROM platform_universal_history_child_offset'
+        );
     }
 }

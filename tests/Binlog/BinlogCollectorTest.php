@@ -14,24 +14,24 @@ class BinlogCollectorTest extends TestCase
      * COL(360,000): insert/delete: 40,000*field(4) + 40,000*field(4) + update: 40,000+changed_field(1)
      *                   = 160,000 + 160,000 + 40,000 = 360,000
      */
-    const BINLOG_TOTAL_COUNT = 1200;
-    const WRITE_BINLOG_ROW_COUNT = 40000;
-    const UPDATE_BINLOG_ROW_COUNT = 40000;
-    const DELETE_BINLOG_ROW_COUNT = 40000;
-    const BINLOG_ROW_COUNT = self::WRITE_BINLOG_ROW_COUNT + self::UPDATE_BINLOG_ROW_COUNT + self::DELETE_BINLOG_ROW_COUNT;
-    const WRITE_BINLOG_COL_COUNT = 160000;
-    const UPDATE_BINLOG_COL_COUNT = 40000;
-    const DELETE_BINLOG_COL_COUNT = 160000;
-    const BINLOG_COL_COUNT = self::WRITE_BINLOG_COL_COUNT + self::UPDATE_BINLOG_COL_COUNT + self::DELETE_BINLOG_COL_COUNT;
+    private const BINLOG_TOTAL_COUNT = 1200;
+    private const WRITE_BINLOG_ROW_COUNT = 40000;
+    private const UPDATE_BINLOG_ROW_COUNT = 40000;
+    private const DELETE_BINLOG_ROW_COUNT = 40000;
+    private const BINLOG_ROW_COUNT = self::WRITE_BINLOG_ROW_COUNT + self::UPDATE_BINLOG_ROW_COUNT + self::DELETE_BINLOG_ROW_COUNT;
+    private const WRITE_BINLOG_COL_COUNT = 160000;
+    private const UPDATE_BINLOG_COL_COUNT = 40000;
+    private const DELETE_BINLOG_COL_COUNT = 160000;
+    private const BINLOG_COL_COUNT = self::WRITE_BINLOG_COL_COUNT + self::UPDATE_BINLOG_COL_COUNT + self::DELETE_BINLOG_COL_COUNT;
 
-    const TARGET_TABLES = [
+    private const TARGET_TABLES = [
         'binlog_sample1.test_target1',
         'binlog_sample2.test_target2',
         'binlog_sample3.test_target3',
-        'binlog_sample4.test_target4'
+        'binlog_sample4.test_target4',
     ];
 
-    public function testBinlogCollectResult()
+    public function testBinlogCollectResult(): void
     {
         $binlog_history_model = BinlogHistoryModel::createBinlogHistoryWrite();
 

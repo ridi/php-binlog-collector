@@ -11,14 +11,14 @@
   ],
   "require": {
     "illuminate/support": "^5.4",
-    "krowinski/php-mysql-replication": "3.0.1",
+    "krowinski/php-mysql-replication": "5.0.4",
     "monolog/monolog": "^1.18.0",
     "ridibooks/platform-gnfdb": "^0.1",
     "vlucas/phpdotenv": "^2.4",
     "sentry/sentry": "^1.5"
   },
   "require-dev": {
-    "phpunit/phpunit": "^6.0"
+    "phpunit/phpunit": "^7.0"
   },
   "autoload": {
     "psr-4": {

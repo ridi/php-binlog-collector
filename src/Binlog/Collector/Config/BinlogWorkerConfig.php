@@ -4,12 +4,8 @@ namespace Binlog\Collector\Config;
 
 use Binlog\Collector\Exception\MsgException;
 use MySQLReplication\Config\Config;
-use MySQLReplication\Config\ConfigService;
+use MySQLReplication\Config\ConfigFactory;
 
-/**
- * Class BinlogWorkerConfig
- * @package Binlog\Collector\Config
- */
 class BinlogWorkerConfig
 {
     /** @var Config */
@@ -43,12 +39,12 @@ class BinlogWorkerConfig
 
     public static function create(array $binlog_connect_array, array $binlog_config_array): self
     {
-        $connect_config = (new ConfigService())->makeConfigFromArray($binlog_connect_array);
+        $connect_config = ConfigFactory::makeConfigFromArray($binlog_connect_array);
 
-        return BinlogWorkerConfig::importFromInit($connect_config, $binlog_config_array);
+        return self::importFromInit($connect_config, $binlog_config_array);
     }
 
-    public function validate()
+    public function validate(): void
     {
         if ($this->child_process_max_count === 0) {
             throw new MsgException('child_process_max_count is empty');

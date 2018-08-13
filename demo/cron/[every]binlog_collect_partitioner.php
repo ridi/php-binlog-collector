@@ -18,7 +18,7 @@ $env_config = BinlogEnvConfig::importDefaultConfig();
 $exception_handler = new DefaultSentryExceptionHandler('./', 'binlog_collector', $env_config);
 $configuration = BinlogConfiguration::newInstance($argv, $env_config, $exception_handler);
 
-$function = function () use ($configuration) {
+$function = function () use ($configuration): void {
     $application = new BinlogCollectorApplication($configuration);
     $application->executePartitioning();
 };

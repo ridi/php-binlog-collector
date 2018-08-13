@@ -6,10 +6,6 @@ use Binlog\Collector\Config\BinlogEnvConfig;
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
 
-/**
- * Class ConnectionProvider
- * @package Binlog\Collector\Library\DB
- */
 class ConnectionProvider
 {
     /** @var Connection[] */
@@ -31,11 +27,6 @@ class ConnectionProvider
         return $connection;
     }
 
-    /**
-     * @param string $group_name
-     *
-     * @return Connection
-     */
     protected static function createConnection(string $group_name): Connection
     {
         $connection = DriverManager::getConnection(BinlogEnvConfig::getConnectionParams($group_name));
@@ -44,7 +35,7 @@ class ConnectionProvider
         return $connection;
     }
 
-    protected static function closeAllConnections()
+    protected static function closeAllConnections(): void
     {
         foreach (self::$connection_pool as $connection) {
             $connection->close();

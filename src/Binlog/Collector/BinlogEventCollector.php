@@ -3,17 +3,13 @@
 namespace Binlog\Collector;
 
 use Binlog\Collector\Config\BinlogWorkerConfig;
-use MySQLReplication\Definitions\ConstEventsNames;
-use MySQLReplication\Event\DTO\EventDTO;
 use Binlog\Collector\Dto\BinlogOffsetDto;
 use Binlog\Collector\Dto\GtidOffsetRangeDto;
 use Binlog\Collector\Dto\OnlyBinlogOffsetDto;
 use Binlog\Collector\Exception\MsgException;
+use MySQLReplication\Definitions\ConstEventsNames;
+use MySQLReplication\Event\DTO\EventDTO;
 
-/**
- * Class BinlogEventCollector
- * @package Binlog\Collector
- */
 class BinlogEventCollector
 {
     /** @var BinlogWorkerConfig */
@@ -35,7 +31,7 @@ class BinlogEventCollector
 
     /** @var GtidOffsetRangeDto */
     private $child_gtid_offset_range_dto;
-    /** $var string */
+    /** @var string */
     private $current_binlog_file_name;
 
     /** @var int */
@@ -60,36 +56,32 @@ class BinlogEventCollector
         $this->replication_query = $replication_query;
     }
 
-    public function initEvents()
+    public function initEvents(): void
     {
         $this->events = [];
     }
 
-    public function addEvent(EventDTO $event)
+    public function addEvent(EventDTO $event): void
     {
-        if (in_array(
-            $event->getType(),
-            [
-                ConstEventsNames::DELETE,
-                ConstEventsNames::UPDATE,
-                ConstEventsNames::WRITE,
-            ]
-        )) {
+        if (in_array($event->getType(), [
+            ConstEventsNames::DELETE,
+            ConstEventsNames::UPDATE,
+            ConstEventsNames::WRITE,
+        ])
+        ) {
             $this->events[] = $event;
         }
     }
 
     public function isIgnoreEvent(EventDTO $event): bool
     {
-        if (in_array(
-            $event->getType(),
-            [
-                ConstEventsNames::GTID,
-                ConstEventsNames::TABLE_MAP,
-                ConstEventsNames::QUERY,
-                ConstEventsNames::FORMAT_DESCRIPTION
-            ]
-        )) {
+        if (in_array($event->getType(), [
+            ConstEventsNames::GTID,
+            ConstEventsNames::TABLE_MAP,
+            ConstEventsNames::QUERY,
+            ConstEventsNames::FORMAT_DESCRIPTION,
+        ])
+        ) {
             return true;
         }
 
@@ -104,17 +96,17 @@ class BinlogEventCollector
         return $this->events;
     }
 
-    public function increaseGtidCount()
+    public function increaseGtidCount(): void
     {
         $this->gtid_count++;
     }
 
-    public function increaseProcessedEventCount(int $count)
+    public function increaseProcessedEventCount(int $count): void
     {
         $this->processed_event_count += $count;
     }
 
-    public function increaseProcessedRowCount(int $count)
+    public function increaseProcessedRowCount(int $count): void
     {
         $this->processed_row_count += $count;
     }
@@ -149,7 +141,7 @@ class BinlogEventCollector
         return (time() - $this->start_time);
     }
 
-    public function updateCurrentGtidOffset(int $gtid_pos)
+    public function updateCurrentGtidOffset(int $gtid_pos): void
     {
         $this->increaseGtidCount();
 
@@ -177,27 +169,24 @@ class BinlogEventCollector
         }
     }
 
-    /**
-     * @throws MsgException
-     */
-    public function assertHasCurrentGtidOffset()
+    public function assertHasCurrentGtidOffset(): void
     {
         if ($this->current_gtid_offset_dto === null) {
             throw new MsgException('abnormal state: not has current gtid offset(not start mariaDb_gtid_event)');
         }
     }
 
-    public function setCurrentBinlogFileName(string $current_binlog_file_name)
+    public function setCurrentBinlogFileName(string $current_binlog_file_name): void
     {
         $this->current_binlog_file_name = $current_binlog_file_name;
     }
 
-    public function initCurrentGtidOffsetDto()
+    public function initCurrentGtidOffsetDto(): void
     {
         $this->current_gtid_offset_dto = null;
     }
 
-    public function setStartTime(int $start_time)
+    public function setStartTime(int $start_time): void
     {
         $this->start_time = $start_time;
     }

@@ -4,10 +4,6 @@ namespace Binlog\Collector\Dto;
 
 use Binlog\Collector\ReplicationQuery;
 
-/**
- * Class GtidOffsetRangeDto
- * @package Binlog\Collector\Dto
- */
 class GtidOffsetRangeDto
 {
     /** @var int */
@@ -17,6 +13,13 @@ class GtidOffsetRangeDto
     /** @var BinLogOffsetDto */
     public $end_dto;
 
+    /**
+     * @param ReplicationQuery       $replication_query
+     * @param int                    $child_index
+     * @param OnlyGtidOffsetRangeDto $gtid_range_dto
+     *
+     * @return GtidOffsetRangeDto
+     */
     public static function create(
         ReplicationQuery $replication_query,
         int $child_index,

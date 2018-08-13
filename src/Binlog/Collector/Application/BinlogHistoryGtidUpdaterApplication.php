@@ -8,16 +8,11 @@ use Binlog\Collector\Exception\MsgException;
 use Binlog\Collector\Library\DB\GnfConnectionProvider;
 use Monolog\Logger;
 
-/**
- * Class BinlogHistoryGtidUpdaterApplication
- * @package Binlog\Collector\Application
- */
 class BinlogHistoryGtidUpdaterApplication
 {
-    const PARTITION_COUNT = 10;
-    const CHILD_ONCE_BINLOG_FETCH_LIMIT = 1000;
-    const MAX_COUNT_PER_CHILD = 100000;
-    const MIN_COUNT_PER_CHILD = 1000;
+    private const PARTITION_COUNT = 10;
+    private const MAX_COUNT_PER_CHILD = 100000;
+    private const MIN_COUNT_PER_CHILD = 1000;
 
     /** @var BinlogConfiguration */
     private $binlog_configuration;
@@ -30,12 +25,12 @@ class BinlogHistoryGtidUpdaterApplication
         $this->logger = $this->binlog_configuration->exception_handler->getLogger();
     }
 
-    public function executeUpdate()
+    public function executeUpdate(): void
     {
         $start_time = time();
         $this->logger->info('executeMain Started');
         try {
-            list($partition_id_to_start_binlog_id, $partition_binlog_range) = $this->initialize();
+            [$partition_id_to_start_binlog_id, $partition_binlog_range] = $this->initialize();
             GnfConnectionProvider::closeAllConnections();
             $child_pid_to_partition_id = [];
             foreach ($partition_id_to_start_binlog_id as $partition_id => $start_binlog_id) {
@@ -59,7 +54,7 @@ class BinlogHistoryGtidUpdaterApplication
              * 전체 child process를 loop 돌면서 기다림
              */
             $child_pid = pcntl_waitpid(0, $status);
-            while ($child_pid != -1) {
+            while ($child_pid !== -1) {
                 $status = pcntl_wexitstatus($status);
                 $partition_id = $child_pid_to_partition_id[$child_pid];
                 $this->logger->info(
@@ -97,7 +92,7 @@ class BinlogHistoryGtidUpdaterApplication
         $binlog_history_service = $this->binlog_configuration->binlog_history_service;
         $partition_id_to_start_binlog_id = [];
         $binlog_id = $binlog_history_service->getRecentEmptyGtidBinlogId();
-        if ($binlog_id === null) {
+        if ($binlog_id === 0) {
             return $partition_id_to_start_binlog_id;
         }
         $offset = $partition_binlog_range - 1;
@@ -108,7 +103,7 @@ class BinlogHistoryGtidUpdaterApplication
                 $next_binlog_id,
                 $offset
             );
-            if ($next_binlog_id === null) {
+            if ($next_binlog_id === 0) {
                 break;
             }
             $partition_id_to_start_binlog_id[$partition_id] = $next_binlog_id;
@@ -130,7 +125,7 @@ class BinlogHistoryGtidUpdaterApplication
         return $partition_binlog_range;
     }
 
-    public function executeChildProcessAndExit(int $partition_id, int $start_binlog_id, int $max_binlog_count)
+    public function executeChildProcessAndExit(int $partition_id, int $start_binlog_id, int $max_binlog_count): void
     {
         $connect_config = $this->binlog_configuration->createConnectConfig();
         $binlog_history_gtid_child_update = null;

@@ -4,10 +4,6 @@ namespace Binlog\Collector\Dto;
 
 use MySQLReplication\Definitions\ConstEventsNames;
 
-/**
- * Class BinlogHistoryDto
- * @package Binlog\Collector\Dto
- */
 class BinlogHistoryDto
 {
     /** @var int - bigint */
@@ -69,7 +65,7 @@ class BinlogHistoryDto
         return $dto;
     }
 
-    public function getGtid()
+    public function getGtid(): string
     {
         return 'bin|' . $this->gtid . '|' . $this->event_index;
     }
@@ -79,7 +75,7 @@ class BinlogHistoryDto
         $dict = [
             'binlog_filename' => $this->binlog_offset_dto->file_name,
             'gtid_end_pos' => $this->binlog_offset_dto->position,
-            'reg_date' =>$this->reg_date
+            'reg_date' => $this->reg_date,
         ];
         if ($this->binlog_id !== null) {
             $dict['id'] = $this->binlog_id;
@@ -118,7 +114,7 @@ class BinlogHistoryDto
     public function exportColumnInfoWithRowIdDatabaseVer3(): array
     {
         $dtos = [];
-        if ($this->action == ConstEventsNames::WRITE) {
+        if ($this->action === ConstEventsNames::WRITE) {
             foreach ($this->data_dict as $key => $value) {
                 $dtos[] = [
                     'row_id' => $this->row_id,
@@ -127,7 +123,7 @@ class BinlogHistoryDto
                     'data_after' => $value,
                 ];
             }
-        } elseif ($this->action == ConstEventsNames::UPDATE) {
+        } elseif ($this->action === ConstEventsNames::UPDATE) {
             $before_dict = $this->data_dict['before'];
             $after_dict = $this->data_dict['after'];
             if (is_array($after_dict)) {
@@ -140,7 +136,7 @@ class BinlogHistoryDto
                     ];
                 }
             }
-        } elseif ($this->action == ConstEventsNames::DELETE) {
+        } elseif ($this->action === ConstEventsNames::DELETE) {
             foreach ($this->data_dict as $key => $value) {
                 $dtos[] = [
                     'row_id' => $this->row_id,

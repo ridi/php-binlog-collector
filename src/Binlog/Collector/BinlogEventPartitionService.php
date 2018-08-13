@@ -8,10 +8,6 @@ use Binlog\Collector\Model\ReplicationDbModel;
 use Binlog\Collector\Utils\BinlogUtils;
 use Monolog\Logger;
 
-/**
- * Class BinlogEventPartitionService
- * @package Binlog\Collector
- */
 class BinlogEventPartitionService
 {
     /** @var Logger */
@@ -52,7 +48,7 @@ class BinlogEventPartitionService
         $dtos = [];
         $current_partition_count = 0;
 
-        list($dicts, $current_binlog_file_name) = $this->getNextJumpEventDictsAndFile(
+        [$dicts, $current_binlog_file_name] = $this->getNextJumpEventDictsAndFile(
             $start_binlog_offset_dto->file_name,
             $start_binlog_offset_dto->position,
             true
@@ -77,7 +73,7 @@ class BinlogEventPartitionService
             }
 
             $next_pos = $dicts[$dict_count - 1]['End_log_pos'];
-            list($dicts, $current_binlog_file_name) = $this->getNextJumpEventDictsAndFile(
+            [$dicts, $current_binlog_file_name] = $this->getNextJumpEventDictsAndFile(
                 $current_binlog_file_name,
                 $next_pos,
                 true
@@ -101,7 +97,7 @@ class BinlogEventPartitionService
     private function getNextJumpEventDictsAndFile(string $binlog_file_name, int $pos, bool $use_next_seq_file): array
     {
         $dicts = $this->replication_db_model->showBinlogEvents($binlog_file_name, $pos, $this->jump_offset);
-        if (count($dicts) === 0 && $use_next_seq_file) {
+        if ($use_next_seq_file && count($dicts) === 0) {
             $binlog_file_name = BinlogUtils::calculateNextSeqFile($binlog_file_name);
             $row_count = $this->jump_offset;
             $dicts = $this->replication_db_model->showBinlogEventsFromInit($binlog_file_name, 0, $row_count);
@@ -110,17 +106,11 @@ class BinlogEventPartitionService
         return [$dicts, $binlog_file_name];
     }
 
-    /**
-     * @param int                 $current_partition_count
-     * @param OnlyBinlogOffsetDto $start_binlog_offset_dto
-     *
-     * @return OnlyBinlogOffsetDto|null
-     */
     public function calculateLastSecondGtidOffsetDto(
         int $current_partition_count,
         OnlyBinlogOffsetDto $start_binlog_offset_dto
-    ) {
-        list($dicts, $current_binlog_file_name) = $this->getNextEventDictsAndFile(
+    ): ?OnlyBinlogOffsetDto {
+        [$dicts, $current_binlog_file_name] = $this->getNextEventDictsAndFile(
             $start_binlog_offset_dto->file_name,
             $start_binlog_offset_dto->position,
             true
@@ -148,7 +138,7 @@ class BinlogEventPartitionService
     {
         $row_count = $this->jump_offset;
         $dicts = $this->replication_db_model->showBinlogEvents($binlog_file_name, $pos, 0, $row_count);
-        if (count($dicts) === 0 && $use_next_seq_file) {
+        if ($use_next_seq_file && count($dicts) === 0) {
             $binlog_file_name = BinlogUtils::calculateNextSeqFile($binlog_file_name);
             $dicts = $this->replication_db_model->showBinlogEventsFromInit($binlog_file_name, 0, $row_count);
         }
@@ -156,7 +146,7 @@ class BinlogEventPartitionService
         return [$dicts, $binlog_file_name];
     }
 
-    private function dumpPartitionInfo(int $partition_count, string $binlog_file_name, int $gtid_end_log_pos)
+    private function dumpPartitionInfo(int $partition_count, string $binlog_file_name, int $gtid_end_log_pos): void
     {
         if ($partition_count % 10 !== 0) {
             return;

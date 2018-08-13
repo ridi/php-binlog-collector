@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 class BinlogHistoryGtidChildUpdaterTest extends TestCase
 {
 
-    public function testSortDescendingByBinlogFileNameAndGtidEndPos()
+    public function testSortDescendingByBinlogFileNameAndGtidEndPos(): void
     {
         $dicts[] = $this->makeBinlogDict(4, 'mariadb-bin.007350', 10000001, '', '2017-09-14 17:14:42');
         $dicts[] = $this->makeBinlogDict(2, 'mariadb-bin.007351', 20000001, '', '2017-09-14 17:14:47');
@@ -22,8 +22,13 @@ class BinlogHistoryGtidChildUpdaterTest extends TestCase
         $this->assertEquals(4, $dicts[3]['id']);
     }
 
-    public function makeBinlogDict(int $id, string $binlog_filename, int $gtid_end_pos, string $gtid, string $reg_date)
-    {
+    public function makeBinlogDict(
+        int $id,
+        string $binlog_filename,
+        int $gtid_end_pos,
+        string $gtid,
+        string $reg_date
+    ): array {
         return [
             'id' => $id,
             'binlog_filename' => $binlog_filename,

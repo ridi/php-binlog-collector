@@ -2,10 +2,6 @@
 
 namespace Binlog\Collector\Dto;
 
-/**
- * Class BinlogOffsetDto
- * @package Binlog\Collector\Dto
- */
 class BinlogOffsetDto extends OnlyBinlogOffsetDto
 {
     /** @var string */

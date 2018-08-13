@@ -4,13 +4,8 @@ namespace Binlog\Collector\Model;
 
 use Doctrine\DBAL\Connection;
 use Doctrine\DBAL\DriverManager;
-use Doctrine\DBAL\Exception\DriverException;
 use MySQLReplication\Config\Config;
 
-/**
- * Class ReplicationDbModel
- * @package Binlog\Collector\Model
- */
 class ReplicationDbModel
 {
     /** @var Connection */
@@ -32,7 +27,7 @@ class ReplicationDbModel
                 'host' => $config->getHost(),
                 'port' => empty($config->getPort()) ? 3306 : $config->getPort(),
                 'driver' => 'pdo_mysql',
-                'charset' => $config->getCharset()
+                'charset' => $config->getCharset(),
             ]
         );
     }
@@ -47,7 +42,7 @@ class ReplicationDbModel
         return $this->connection;
     }
 
-    public function close()
+    public function close(): void
     {
         $this->connection->close();
     }
@@ -58,7 +53,7 @@ class ReplicationDbModel
             "SELECT BINLOG_GTID_POS(\"{$binlog_filename}\", {$binlog_offset} ) as mariadb_gtid"
         )['mariadb_gtid'];
 
-        return ($gtid !== null) ? $gtid : '';
+        return $gtid ?? '';
     }
 
     public function showMasterStatus(): array
@@ -72,7 +67,7 @@ class ReplicationDbModel
             return $this->getConnection()->fetchAll(
                 "SHOW BINLOG EVENTS IN '{$log_name}' FROM {$pos} LIMIT {$offset}, {$row_count}"
             );
-        } catch (DriverException $e) {
+        } catch (\Throwable $e) {
             return [];
         }
     }
@@ -83,7 +78,7 @@ class ReplicationDbModel
             return $this->getConnection()->fetchAll(
                 "SHOW BINLOG EVENTS IN '{$log_name}' LIMIT {$offset}, {$row_count}"
             );
-        } catch (DriverException $e) {
+        } catch (\Throwable $e) {
             return [];
         }
     }

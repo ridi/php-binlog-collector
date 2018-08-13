@@ -6,10 +6,6 @@ use Binlog\Collector\Dto\BinlogHistoryDto;
 use Binlog\Collector\Dto\OnlyBinlogOffsetDto;
 use Binlog\Collector\Dto\OnlyGtidOffsetRangeDto;
 
-/**
- * interface BinlogHistoryServiceInterface
- * @package Binlog\Collector\Interfaces
- */
 interface BinlogHistoryServiceInterface
 {
     public function getChildSlaveId(int $index): int;
@@ -38,10 +34,7 @@ interface BinlogHistoryServiceInterface
 
     public function deleteChildGtidOffsetRangeById(int $child_index): int;
 
-    /**
-     * @return string|null
-     */
-    public function getMinCurrentBinlogPositionDate();
+    public function getMinCurrentBinlogPositionDate(): ?string;
 
     /**
      * insert Universal History Bulk
@@ -54,31 +47,19 @@ interface BinlogHistoryServiceInterface
 
     public function getEmptyGtidBinlogCount(): int;
 
-    /**
-     * @return int|null
-     */
-    public function getRecentEmptyGtidBinlogId();
+    public function getRecentEmptyGtidBinlogId(): int;
 
     public function getEmptyGtidBinlogDictsByLesserEqualId(int $id, int $limit): array;
 
     public function getEmptyGtidBinlogDictsByLesserId(int $id, int $limit): array;
 
-    /**
-     * @param int $id
-     * @param int $offset
-     *
-     * @return int|null
-     */
-    public function getEmptyGtidBinlogIdByLesserIdAndOffset(int $id, int $offset);
+    public function getEmptyGtidBinlogIdByLesserIdAndOffset(int $id, int $offset): int;
 
-    public function updateBinlogGtid(int $id, string $gtid);
+    public function updateBinlogGtid(int $id, string $gtid): void;
 
     public function getParentBinlogOffset(): OnlyBinlogOffsetDto;
 
-    /**
-     * @return string|null
-     */
-    public function getParentBinlogDate();
+    public function getParentBinlogDate(): ?string;
 
     public function upsertParentBinlogOffset(OnlyBinlogOffsetDto $binlog_offset_dto, string $binlog_date = null): int;
 }

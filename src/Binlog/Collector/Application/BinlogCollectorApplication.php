@@ -9,7 +9,6 @@ use Binlog\Collector\Config\BinlogWorkerConfig;
 use Binlog\Collector\Dto\GtidOffsetRangeDto;
 use Binlog\Collector\Dto\OnlyGtidOffsetRangeDto;
 use Binlog\Collector\Exception\BinlogFinishedException;
-use Binlog\Collector\Exception\MsgException;
 use Binlog\Collector\Library\DB\GnfConnectionProvider;
 use Binlog\Collector\Model\ReplicationDbModel;
 use Binlog\Collector\ReplicationQuery;
@@ -17,10 +16,6 @@ use Binlog\Collector\Subscriber\InsertBinlogSubscriber;
 use Monolog\Logger;
 use MySQLReplication\MySQLReplicationFactory;
 
-/**
- * Class BinlogCollectorApplication
- * @package Binlog\Collector\Application
- */
 class BinlogCollectorApplication
 {
     /** @var BinlogConfiguration */
@@ -34,45 +29,45 @@ class BinlogCollectorApplication
         $this->logger = $this->binlog_configuration->exception_handler->getLogger();
     }
 
-    public function getInfo()
+    public function getInfo(): void
     {
         $partitioner_config = $this->binlog_configuration->createPartitionerConfig();
         try {
             $this->logger->info("Initialize!");
             $collector_info = new BinlogCollectorInfo();
             $collector_info->getInfo($this->logger, $partitioner_config, $this->binlog_configuration->argv);
-        } catch (MsgException $e) {
+        } catch (\Throwable $e) {
             $this->logger->info($e->getMessage() . "\n");
         }
     }
 
-    public function executePartitioning()
+    public function executePartitioning(): void
     {
         $partitioner_config = $this->binlog_configuration->createPartitionerConfig();
         try {
             $this->logger->info("Initialize!");
             $collector = new BinlogCollector($this->binlog_configuration->binlog_history_service);
             $collector->initialize($this->logger, $partitioner_config, $this->binlog_configuration->argv);
-        } catch (MsgException $e) {
+        } catch (\Throwable $e) {
             $this->logger->info($e->getMessage() . "\n");
         }
     }
 
-    public function executeWorking()
+    public function executeWorking(): void
     {
         $worker_config = $this->binlog_configuration->createWorkerConfig();
         try {
             $collector = new BinlogCollector($this->binlog_configuration->binlog_history_service);
             $gtid_offset_range_dtos = $collector->getChildGtidOffsetRanges();
             $this->logger->info('TotalGtidPartitions\'s Count: ' . count($gtid_offset_range_dtos));
-        } catch (MsgException $e) {
+        } catch (\Throwable $e) {
             $this->logger->info($e->getMessage() . "\n");
             exit();
         }
 
         $total_dtos_count = count($gtid_offset_range_dtos);
         $child_pid_to_slave_id = [];
-        for ($i = 0; ($i < $worker_config->child_process_max_count && $i < $total_dtos_count); $i++) {
+        for ($i = 0; $i < $worker_config->child_process_max_count && $i < $total_dtos_count; $i++) {
             // 리소스를 공유하기 때문에 fork하기 전에 기존 리소스 반환
             GnfConnectionProvider::closeAllConnections();
 
@@ -98,7 +93,7 @@ class BinlogCollectorApplication
          * 전체 child process를 loop 돌면서 기다림
          */
         $child_pid = pcntl_waitpid(0, $status);
-        while ($child_pid != -1) {
+        while ($child_pid !== -1) {
             GnfConnectionProvider::closeAllConnections();
             $status = pcntl_wexitstatus($status);
             // $this->logger->info("binlog_collector.cron: Child(status:{$status}): completed!\n");
@@ -110,7 +105,7 @@ class BinlogCollectorApplication
                 if ($pid === -1) {
                     $this->logger->info("binlog_collector.cron: Child fork failed!\n");
                     $i++;
-                } elseif ($pid == 0) {
+                } elseif ($pid === 0) {
                     $slave_id = $child_pid_to_slave_id[$child_pid];
                     $this->executeChildProcess($slave_id, $child_index, $worker_config, $gtid_offset_range_dto);
                 } elseif ($pid > 0) {
@@ -129,7 +124,7 @@ class BinlogCollectorApplication
         int $child_index,
         BinlogWorkerConfig $worker_config,
         OnlyGtidOffsetRangeDto $gtid_range_dto
-    ) {
+    ): void {
         try {
             $replication_query = new ReplicationQuery(new ReplicationDbModel($worker_config->connect_config));
             $gtid_offset_range_dto = GtidOffsetRangeDto::create($replication_query, $child_index, $gtid_range_dto);
@@ -137,10 +132,10 @@ class BinlogCollectorApplication
             $new_binlog_worker_config = $this->binlog_configuration->extendWorkerConfig(
                 [
                     'slaveId' => $slave_id,
-                    'mariaDbGtid' => $gtid_offset_range_dto->start_dto->mariadb_gtid
+                    'mariaDbGtid' => $gtid_offset_range_dto->start_dto->mariadb_gtid,
                 ],
                 [
-                    'child_index' => $child_index
+                    'child_index' => $child_index,
                 ]
             );
 
@@ -153,7 +148,7 @@ class BinlogCollectorApplication
                 $gtid_offset_range_dto
             );
 
-            $binlog_stream = new MySQLReplicationFactory();
+            $binlog_stream = new MySQLReplicationFactory($new_binlog_worker_config->connect_config);
             $binlog_stream->registerSubscriber($insert_binlog_subscriber);
 
             while (true) {
