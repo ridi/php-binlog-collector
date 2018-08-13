@@ -30,7 +30,7 @@ class BinlogHistoryGtidUpdaterApplication
         $start_time = time();
         $this->logger->info('executeMain Started');
         try {
-            list($partition_id_to_start_binlog_id, $partition_binlog_range) = $this->initialize();
+            [$partition_id_to_start_binlog_id, $partition_binlog_range] = $this->initialize();
             GnfConnectionProvider::closeAllConnections();
             $child_pid_to_partition_id = [];
             foreach ($partition_id_to_start_binlog_id as $partition_id => $start_binlog_id) {
@@ -92,7 +92,7 @@ class BinlogHistoryGtidUpdaterApplication
         $binlog_history_service = $this->binlog_configuration->binlog_history_service;
         $partition_id_to_start_binlog_id = [];
         $binlog_id = $binlog_history_service->getRecentEmptyGtidBinlogId();
-        if ($binlog_id === null) {
+        if ($binlog_id === 0) {
             return $partition_id_to_start_binlog_id;
         }
         $offset = $partition_binlog_range - 1;
@@ -103,7 +103,7 @@ class BinlogHistoryGtidUpdaterApplication
                 $next_binlog_id,
                 $offset
             );
-            if ($next_binlog_id === null) {
+            if ($next_binlog_id === 0) {
                 break;
             }
             $partition_id_to_start_binlog_id[$partition_id] = $next_binlog_id;

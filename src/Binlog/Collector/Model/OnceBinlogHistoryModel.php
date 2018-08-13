@@ -88,7 +88,7 @@ class OnceBinlogHistoryModel extends BinlogHistoryBaseModel
 
     private function getBinlogId(BinlogHistoryDto $dto): ?string
     {
-        return $this->db->sqlData(
+        return (int)$this->db->sqlData(
             'SELECT id FROM platform_once_history_3_binlog WHERE ?',
             sqlWhere($dto->exportBinlogInfoDatabaseVer3())
         );
@@ -211,11 +211,11 @@ class OnceBinlogHistoryModel extends BinlogHistoryBaseModel
         return intval($this->db->sqlCount('platform_once_history_3_binlog', $where));
     }
 
-    public function getRecentEmptyGtidBinlogId(): ?string
+    public function getRecentEmptyGtidBinlogId(): int
     {
         $where = ['gtid' => ''];
 
-        return $this->db->sqlData(
+        return (int)$this->db->sqlData(
             'SELECT id FROM platform_once_history_3_binlog WHERE ? ORDER BY id DESC ?',
             sqlWhere($where),
             sqlLimit(1)
@@ -250,14 +250,14 @@ class OnceBinlogHistoryModel extends BinlogHistoryBaseModel
         );
     }
 
-    public function getEmptyGtidBinlogIdByLesserIdAndOffset(int $id, int $offset): ?string
+    public function getEmptyGtidBinlogIdByLesserIdAndOffset(int $id, int $offset): int
     {
         $where = [
             'gtid' => '',
             'id' => sqlLesser($id),
         ];
 
-        return $this->db->sqlData(
+        return (int)$this->db->sqlData(
             'SELECT id FROM platform_once_history_3_binlog WHERE ? ORDER BY id DESC ?',
             sqlWhere($where),
             sqlLimit($offset, 1)

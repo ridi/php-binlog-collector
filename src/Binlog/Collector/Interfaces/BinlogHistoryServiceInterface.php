@@ -47,13 +47,13 @@ interface BinlogHistoryServiceInterface
 
     public function getEmptyGtidBinlogCount(): int;
 
-    public function getRecentEmptyGtidBinlogId(): ?string;
+    public function getRecentEmptyGtidBinlogId(): int;
 
     public function getEmptyGtidBinlogDictsByLesserEqualId(int $id, int $limit): array;
 
     public function getEmptyGtidBinlogDictsByLesserId(int $id, int $limit): array;
 
-    public function getEmptyGtidBinlogIdByLesserIdAndOffset(int $id, int $offset): ?string;
+    public function getEmptyGtidBinlogIdByLesserIdAndOffset(int $id, int $offset): int;
 
     public function updateBinlogGtid(int $id, string $gtid): void;
 

@@ -112,7 +112,7 @@ class BinlogHistoryService implements BinlogHistoryServiceInterface
         return $binlog_history_model->getEmptyGtidBinlogCount();
     }
 
-    public function getRecentEmptyGtidBinlogId(): ?string
+    public function getRecentEmptyGtidBinlogId(): int
     {
         $binlog_history_model = BinlogHistoryModel::createBinlogHistoryWrite();
 
@@ -133,7 +133,7 @@ class BinlogHistoryService implements BinlogHistoryServiceInterface
         return $binlog_history_model->getEmptyGtidBinlogDictsByLesserId($id, $limit);
     }
 
-    public function getEmptyGtidBinlogIdByLesserIdAndOffset(int $id, int $offset): ?string
+    public function getEmptyGtidBinlogIdByLesserIdAndOffset(int $id, int $offset): int
     {
         $binlog_history_model = BinlogHistoryModel::createBinlogHistoryWrite();
 

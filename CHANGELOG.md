@@ -12,6 +12,7 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 -- mySQLReplicationFactory() -> MySQLReplicationFactory($config);
 -- update using BinlogException
 - refactoring based on php7.1
+- binlogId's type string to int
 
 ## [1.0.3] - 2018-01-02
 
