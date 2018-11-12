@@ -53,7 +53,7 @@ skip-external-locking
 max_connections		= 100
 connect_timeout		= 5
 wait_timeout		= 600
-max_allowed_packet	= 16M
+max_allowed_packet	= 64M
 thread_cache_size       = 128
 sort_buffer_size	= 4M
 bulk_insert_buffer_size	= 16M
@@ -135,7 +135,7 @@ max_binlog_size         = 100M
 # Read the manual for more InnoDB related options. There are many!
 default_storage_engine	= InnoDB
 # you can't just change log file size, requires special procedure
-#innodb_log_file_size	= 50M
+innodb_log_file_size	= 250M
 innodb_buffer_pool_size	= 256M
 innodb_log_buffer_size	= 8M
 innodb_file_per_table	= 1

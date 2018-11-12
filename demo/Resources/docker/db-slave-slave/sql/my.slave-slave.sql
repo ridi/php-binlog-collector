@@ -38,8 +38,8 @@ CREATE TABLE IF NOT EXISTS `platform_universal_history_3_column` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `row_id` bigint(20) unsigned NOT NULL COMMENT '수정 row No',
   `column` varchar(64) COLLATE utf8_unicode_ci NOT NULL COMMENT '컬럼',
-  `data_before` text COLLATE utf8_unicode_ci COMMENT '수정 전',
-  `data_after` text COLLATE utf8_unicode_ci COMMENT '수정 후',
+  `data_before` longtext COLLATE utf8_unicode_ci COMMENT '수정 전',
+  `data_after` longtext COLLATE utf8_unicode_ci COMMENT '수정 후',
   PRIMARY KEY (`id`),
   UNIQUE KEY `row_column` (`row_id`,`column`),
   CONSTRAINT `row_id` FOREIGN KEY (`row_id`) REFERENCES `platform_universal_history_3_row` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
@@ -94,8 +94,8 @@ CREATE TABLE IF NOT EXISTS `platform_once_history_3_column` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `row_id` bigint(20) unsigned NOT NULL COMMENT '수정 row No',
   `column` varchar(64) COLLATE utf8_unicode_ci NOT NULL COMMENT '컬럼',
-  `data_before` text COLLATE utf8_unicode_ci COMMENT '수정 전',
-  `data_after` text COLLATE utf8_unicode_ci COMMENT '수정 후',
+  `data_before` longtext COLLATE utf8_unicode_ci COMMENT '수정 전',
+  `data_after` longtext COLLATE utf8_unicode_ci COMMENT '수정 후',
   PRIMARY KEY (`id`),
   UNIQUE KEY `row_column` (`row_id`,`column`),
   CONSTRAINT `once_row_id` FOREIGN KEY (`row_id`) REFERENCES `platform_once_history_3_row` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION
