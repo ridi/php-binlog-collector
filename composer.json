@@ -11,7 +11,7 @@
   ],
   "require": {
     "illuminate/support": "^5.4",
-    "krowinski/php-mysql-replication": "5.0.4",
+    "krowinski/php-mysql-replication": "5.0.5",
     "monolog/monolog": "^1.18.0",
     "ridibooks/platform-gnfdb": "^0.1",
     "vlucas/phpdotenv": "^2.4",
