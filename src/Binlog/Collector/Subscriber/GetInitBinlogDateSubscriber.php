@@ -15,7 +15,7 @@ class GetInitBinlogDateSubscriber extends EventSubscribers
     {
     }
 
-    protected function allEvents(EventDTO $event)
+    protected function allEvents(EventDTO $event): void
     {
         if ($event->getType() === ConstEventsNames::FORMAT_DESCRIPTION) {
             return;
