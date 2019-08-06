@@ -8,6 +8,8 @@ use Binlog\Collector\External\RowEventValueSkipperInterface;
 use MySQLReplication\Definitions\ConstEventsNames;
 use MySQLReplication\Event\DTO\EventDTO;
 use MySQLReplication\Event\DTO\RowsDTO;
+use MySQLReplication\Event\RowEvent\ColumnDTO;
+use MySQLReplication\Event\RowEvent\ColumnDTOCollection;
 
 class BinlogHistoryCollector
 {
@@ -64,10 +66,10 @@ class BinlogHistoryCollector
             }
 
             if ($action === ConstEventsNames::UPDATE) {
-                $pk_ids = $this->findPrimaryValues($event->getTableMap()->getFields(), $value['before']);
+                $pk_ids = $this->findPrimaryValues($event->getTableMap()->getColumnDTOCollection(), $value['before']);
                 $value = $this->getOnlyChangedValue($value);
             } else {
-                $pk_ids = $this->findPrimaryValues($event->getTableMap()->getFields(), $value);
+                $pk_ids = $this->findPrimaryValues($event->getTableMap()->getColumnDTOCollection(), $value);
             }
             $ret_dtos[] = BinlogHistoryDto::importFromLog(
                 $binlog_offset_dto,
@@ -83,12 +85,13 @@ class BinlogHistoryCollector
         return $ret_dtos;
     }
 
-    private function findPrimaryValues(array $table_fields, array $row_values): string
+    private function findPrimaryValues(ColumnDTOCollection $column_dto_collection, array $row_values): string
     {
         $pk_ids = [];
-        foreach ($table_fields as $field) {
-            if ($field['is_primary'] === true) {
-                $pk_ids[] = $row_values[$field['name']];
+        /** @var ColumnDto $column_dto */
+        foreach ($column_dto_collection as $column_dto) {
+            if ($column_dto->isPrimary()) {
+                $pk_ids[] = $row_values[$column_dto->getName()];
             }
         }
         if (empty($pk_ids)) {

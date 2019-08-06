@@ -8,7 +8,6 @@ use Binlog\Collector\External\RowEventValueSkipperInterface;
 use Binlog\Collector\Interfaces\BinlogHistoryServiceInterface;
 use Binlog\Collector\OnceBinlogHistoryService;
 use MySQLReplication\Config\Config;
-use MySQLReplication\Config\ConfigFactory;
 
 class BinlogConfiguration
 {
@@ -97,7 +96,7 @@ class BinlogConfiguration
 
     public function createConnectConfig(): Config
     {
-        return ConfigFactory::makeConfigFromArray($this->binlog_env_config->binlog_connect_array);
+        return BinlogConfigFactory::makeConfigFromArray($this->binlog_env_config->binlog_connect_array);
     }
 
     public static function createCustomConnectConfigWithReplace(
@@ -106,6 +105,6 @@ class BinlogConfiguration
     ): Config {
         $new_connect_array = array_merge($binlog_connect_array, $replace_connect_array);
 
-        return ConfigFactory::makeConfigFromArray($new_connect_array);
+        return BinlogConfigFactory::makeConfigFromArray($new_connect_array);
     }
 }

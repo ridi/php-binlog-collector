@@ -51,7 +51,7 @@ class InsertBinlogSubscriber extends EventSubscribers
         $this->binlog_history_service = $binlog_history_service_interface;
     }
 
-    protected function allEvents(EventDTO $event)
+    protected function allEvents(EventDTO $event): void
     {
         if ($this->binlog_worker_config->is_all_print_event) {
             echo $event;
