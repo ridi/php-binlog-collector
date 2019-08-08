@@ -84,11 +84,13 @@ class InsertBinlogSubscriber extends EventSubscribers
             $this->processEvents();
 
             if ($this->event_collector->isGtidCountForPersist()) {
+                $timestamp = $event->getEventInfo()->getTimestamp();
+                $reg_date = (new \DateTime())->setTimestamp($timestamp)->format('Y-m-d H:i:s');
                 $this->binlog_history_service->upsertChildGtidOffsetRange(
                     $this->binlog_worker_config->child_index,
                     $this->event_collector->getCurrentGtidOffsetDto(),
                     $this->event_collector->getEndGtidOffsetDto(),
-                    $event->getEventInfo()->getDateTime()
+                    $reg_date
                 );
             }
 
@@ -153,7 +155,8 @@ class InsertBinlogSubscriber extends EventSubscribers
         EventDto $first_event_dto
     ): void {
         $event_count = sprintf("%03d", $event_count);
-        $reg_date = $first_event_dto->getEventInfo()->getDateTime();
+        $timestamp = $first_event_dto->getEventInfo()->getTimestamp();
+        $reg_date = (new \DateTime())->setTimestamp($timestamp)->format('Y-m-d H:i:s');
         $this->logger->info(
             "child_index({$child_index}): processEvent({$event_count}), " .
             "TargetRow({$universal_history_count}): {$binlog_offset_dto->getBinlogKey()} : {$reg_date}"
