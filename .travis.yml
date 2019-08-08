@@ -51,5 +51,3 @@ script:
  - php ./demo/cron/\[every\]binlog_collect_worker.php
  - cd tests
  - ../vendor/bin/phpunit
- - docker rm -f db-master db-slave db-slave-slave
- - dockr rmi db-master db-slave db-slave-slave
