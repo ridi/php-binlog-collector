@@ -42,9 +42,9 @@ install:
   travis_retry composer install --no-interaction --prefer-dist;
 
 script:
- -  "if [ $DB = 'mariadb-10.0' ]; then php ./demo/cron/\[every\]binlog_collect_partitioner.php change_pos mariadb-bin.000004 4; fi"
- -  "if [ $DB = 'mariadb-10.1' ]; then php ./demo/cron/\[every\]binlog_collect_partitioner.php change_pos mariadb-bin.000005 4; fi"
- -  "if [ $DB = 'mariadb-10.2' ]; then php ./demo/cron/\[every\]binlog_collect_partitioner.php change_pos mariadb-bin.000003 4; fi"
+ -  "if [ $DB = 'mariadb-10.0' ]; then php ./demo/cron/[every]binlog_collect_partitioner.php change_pos mariadb-bin.000004 4; fi"
+ -  "if [ $DB = 'mariadb-10.1' ]; then php ./demo/cron/[every]binlog_collect_partitioner.php change_pos mariadb-bin.000005 4; fi"
+ -  "if [ $DB = 'mariadb-10.2' ]; then php ./demo/cron/[every]binlog_collect_partitioner.php change_pos mariadb-bin.000003 4; fi"
  - php ./demo/cron/\[every\]binlog_collect_partitioner.php continue
  - php ./demo/cron/\[every\]binlog_collect_worker.php
  - php ./demo/cron/\[every\]binlog_collect_worker.php
