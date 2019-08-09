@@ -20,7 +20,8 @@ class GetInitBinlogDateSubscriber extends EventSubscribers
         if ($event->getType() === ConstEventsNames::FORMAT_DESCRIPTION) {
             return;
         }
-        $this->current_binlog_date = $event->getEventInfo()->getDateTime();
+        $timestamp = $event->getEventInfo()->getTimestamp();
+        $this->current_binlog_date = (new \DateTime())->setTimestamp($timestamp)->format('Y-m-d H:i:s');
     }
 
     public function getCurrentBinlogDate(): ?string

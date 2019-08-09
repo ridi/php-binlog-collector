@@ -36,6 +36,7 @@ class BinlogHistoryParentOffsetModel extends BinlogHistoryBaseModel
             'end_bin_log_file_name' => $binlog_offset_dto->file_name,
             'end_bin_log_position' => $binlog_offset_dto->position,
             'end_bin_log_date' => $binlog_date,
+            'offset_type' => self::CURRENT_OFFSET,
         ];
 
         return $this->db->sqlInsertOrUpdate('platform_universal_history_offset', $datas);

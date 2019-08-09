@@ -56,7 +56,8 @@ class BinlogHistoryCollector
         $table = $event->getTableMap()->getTable();
         $schema_name = $event->getTableMap()->getDatabase() . '.' . $table;
         $values = $event->getValues();
-        $reg_date = $event->getEventInfo()->getDateTime();
+        $timestamp = $event->getEventInfo()->getTimestamp();
+        $reg_date = (new \DateTime())->setTimestamp($timestamp)->format('Y-m-d H:i:s');
         $action = $event->getType();
 
         foreach ($values as $value) {
