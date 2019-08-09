@@ -18,16 +18,3 @@ log_slave_updates
 binlog-format           = row
 innodb_log_file_size	= 250M
 max_allowed_packet	= 64M
-
-my.cnf -> my.slave-slave.cnf
-server-id               = 3
-log_bin                 = /var/log/mysql/mariadb-bin
-log_bin_index           = /var/log/mysql/mariadb-bin.index
-# slaves
-relay_log               = /var/log/mysql/relay-bin
-relay_log_index = /var/log/mysql/relay-bin.index
-relay_log_info_file     = /var/log/mysql/relay-bin.info
-log_slave_updates
-binlog-format           = row
-innodb_log_file_size	= 250M
-max_allowed_packet	= 64M
