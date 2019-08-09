@@ -4,7 +4,6 @@ namespace Binlog\Collector\Config;
 
 use Binlog\Collector\Exception\MsgException;
 use MySQLReplication\Config\Config;
-use MySQLReplication\Config\ConfigFactory;
 
 class BinlogWorkerConfig
 {
@@ -39,7 +38,7 @@ class BinlogWorkerConfig
 
     public static function create(array $binlog_connect_array, array $binlog_config_array): self
     {
-        $connect_config = ConfigFactory::makeConfigFromArray($binlog_connect_array);
+        $connect_config = BinlogConfigFactory::makeConfigFromArray($binlog_connect_array);
 
         return self::importFromInit($connect_config, $binlog_config_array);
     }

@@ -2,11 +2,11 @@ USE mysql;
 
 FLUSH PRIVILEGES;
 CHANGE MASTER TO 
-MASTER_HOST='slave',
+MASTER_HOST='master',
 MASTER_USER='repl',
 MASTER_PASSWORD='1234',
 MASTER_PORT=3306,
-MASTER_LOG_FILE='mariadb-bin.000004',
+MASTER_LOG_FILE='mariadb-bin.000005',
 MASTER_LOG_POS=4,
 MASTER_CONNECT_RETRY=10;
 start slave;
@@ -60,6 +60,7 @@ CREATE TABLE IF NOT EXISTS `platform_universal_history_offset` (
   `end_bin_log_date` datetime NOT NULL COMMENT 'end bin_log_position 날짜',
   PRIMARY KEY (`offset_type`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
 CREATE TABLE IF NOT EXISTS `platform_time_monitor` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT '시퀀스',
   `type` varchar(30) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'time monitor 타입',

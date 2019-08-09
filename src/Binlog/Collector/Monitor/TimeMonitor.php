@@ -9,7 +9,7 @@ use Binlog\Collector\Monitor\Model\BinlogTimeMonitorModel;
  * 모니터링 시간을 기록하는 class로, 데이터 조회에 관련된 method는 TimeMonitorService에 작성해주세요.
  *
  * Class TimeMonitor
- * @package Ridibooks\Platform\Monitor
+ * @package Binlog\Collector\Monitor
  */
 class TimeMonitor
 {
