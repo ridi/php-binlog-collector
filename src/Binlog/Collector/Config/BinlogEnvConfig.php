@@ -30,13 +30,13 @@ class BinlogEnvConfig
     public static function getTargetBinlogDbParams(): array
     {
         return [
-            'host' => getenv('TARGET_DB_HOST'),
-            'user' => getenv('TARGET_DB_USER'),
-            'port' => getenv('TARGET_DB_PORT'),
-            'password' => getenv('TARGET_DB_PASSWORD'),
-            'dbname' => getenv('TARGET_DB_DBNAME'),
-            'driver' => getenv('TARGET_DB_DRIVER'),
-            'charset' => getenv('TARGET_DB_CHARSET'),
+            'host' => getenv('BINLOG_MYSQL_TARGET_HOST'),
+            'user' => getenv('BINLOG_MYSQL_TARGET_USER'),
+            'port' => getenv('BINLOG_MYSQL_TARGET_PORT'),
+            'password' => getenv('BINLOG_MYSQL_TARGET_PASSWORD'),
+            'dbname' => getenv('BINLOG_MYSQL_TARGET_DBNAME'),
+            'driver' => getenv('BINLOG_MYSQL_TARGET_DRIVER'),
+            'charset' => getenv('BINLOG_MYSQL_TARGET_CHARSET'),
             'driverOptions' => [\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'],
         ];
     }
@@ -44,13 +44,13 @@ class BinlogEnvConfig
     public static function getHistoryWriteDbParams(): array
     {
         return [
-            'host' => getenv('HISTORY_WRITE_DB_HOST'),
-            'user' => getenv('HISTORY_WRITE_DB_USER'),
-            'port' => getenv('HISTORY_WRITE_DB_PORT'),
-            'password' => getenv('HISTORY_WRITE_DB_PASSWORD'),
-            'dbname' => getenv('HISTORY_WRITE_DB_DBNAME'),
-            'driver' => getenv('HISTORY_WRITE_DB_DRIVER'),
-            'charset' => getenv('HISTORY_WRITE_DB_CHARSET'),
+            'host' => getenv('BINLOG_MYSQL_HISTORY_WRITE_HOST'),
+            'user' => getenv('BINLOG_MYSQL_HISTORY_WRITE_USER'),
+            'port' => getenv('BINLOG_MYSQL_HISTORY_WRITE_PORT'),
+            'password' => getenv('BINLOG_MYSQL_HISTORY_WRITE_PASSWORD'),
+            'dbname' => getenv('BINLOG_MYSQL_HISTORY_WRITE_DBNAME'),
+            'driver' => getenv('BINLOG_MYSQL_HISTORY_WRITE_DRIVER'),
+            'charset' => getenv('BINLOG_MYSQL_HISTORY_WRITE_CHARSET'),
             'driverOptions' => [\PDO::MYSQL_ATTR_INIT_COMMAND => 'SET NAMES utf8'],
         ];
     }
@@ -88,8 +88,8 @@ class BinlogEnvConfig
         }
 
         $self = new self();
-        $self->enable_sentry = getenv('ENABLE_SENTRY');
-        $self->sentry_key = getenv('SENTRY_KEY');
+        $self->enable_sentry = (bool)getenv('BINLOG_ENABLE_SENTRY');
+        $self->sentry_key = getenv('BINLOG_SENTRY_KEY');
         $self->binlog_connect_array = array_merge($default_binlog_connect_array, $replace_binlog_connect_array);
         $self->binlog_config_array = array_merge($default_binlog_config_array, $replace_binlog_config_array);
         $self->row_event_value_skipper = $row_event_value_skipper;
