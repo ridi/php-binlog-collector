@@ -1,0 +1,3 @@
+FROM mariadb:10.3.22
+COPY my.slave-10.3.cnf /etc/mysql/my.cnf
+COPY ./sql/my.slave-10.3.sql /temp/my.slave.sql
