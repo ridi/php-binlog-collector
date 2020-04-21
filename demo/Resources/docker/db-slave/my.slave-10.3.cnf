@@ -3,7 +3,7 @@
 # You can copy this file to one of:
 # - "/etc/mysql/my.cnf" to set global options,
 # - "~/.my.cnf" to set user-specific options.
-# 
+#
 # One can use all long options that the program supports.
 # Run program with --help to get a list of available options and with
 # --print-defaults to see which it would actually understand and use.
@@ -105,7 +105,7 @@ long_query_time = 10
 # The following can be used as easy to replay backup logs or for replication.
 # note: if you are setting up a replication slave, see README.Debian about
 #       other settings you may need to change.
-server-id		= 1
+server-id		= 2
 #report_host		= master1
 #auto_increment_increment = 2
 #auto_increment_offset	= 1
@@ -117,10 +117,10 @@ binlog-format           = row
 expire_logs_days	= 10
 max_binlog_size         = 100M
 # slaves
-#relay_log		= /var/log/mysql/relay-bin
-#relay_log_index	= /var/log/mysql/relay-bin.index
-#relay_log_info_file	= /var/log/mysql/relay-bin.info
-#log_slave_updates
+relay_log		= /var/log/mysql/relay-bin
+relay_log_index	= /var/log/mysql/relay-bin.index
+relay_log_info_file	= /var/log/mysql/relay-bin.info
+log_slave_updates
 #read_only
 #
 # If applications support it, this stricter sql_mode prevents some
@@ -132,7 +132,6 @@ max_binlog_size         = 100M
 # InnoDB is enabled by default with a 10MB datafile in /var/lib/mysql/.
 # Read the manual for more InnoDB related options. There are many!
 default_storage_engine	= InnoDB
-# you can't just change log file size, requires special procedure
 innodb_log_file_size	= 250M
 innodb_buffer_pool_size	= 256M
 innodb_log_buffer_size	= 8M
@@ -187,4 +186,5 @@ key_buffer		= 16M
 # * IMPORTANT: Additional settings that can override those from this file!
 #   The files must end with '.cnf', otherwise they'll be ignored.
 #
+!include /etc/mysql/mariadb.cnf
 !includedir /etc/mysql/conf.d/

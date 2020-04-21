@@ -1,0 +1,3 @@
+FROM mariadb:10.3.22
+COPY my.master-10.3.cnf /etc/mysql/my.cnf
+COPY ./sql /temp
