@@ -6,6 +6,7 @@ php:
 env:
   - DB=mariadb-10.0
   - DB=mariadb-10.1
+  - DB=mariadb-10.2
 services:
   - docker
 
