@@ -6,6 +6,9 @@ and this project adheres to [Semantic Versioning](http://semver.org/spec/v2.0.0.
 
 ### CHANGED
 - upgrade php-mysql-replication v6.2.2
+- fixed Dto/TimeMonitorDto.php
+
+### Added
 - add test env=mariadb-10.2
 
 ## [1.3.0] - 2019-09-18
