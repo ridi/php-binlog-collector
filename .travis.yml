@@ -4,10 +4,10 @@ php:
   - '7.4'
 
 env:
-  - DB=mariadb-10.0
   - DB=mariadb-10.1
   - DB=mariadb-10.2
   - DB=mariadb-10.3
+  - DB=mariadb-10.4
 services:
   - docker
 
@@ -18,14 +18,14 @@ cache:
     - $HOME/.composer/cache
 
 before_script:
-  - "if [ $DB = 'mariadb-10.0' ]; then docker build -t db-master -f ./demo/Resources/docker/db-master/Dockerfile-10.0 ./demo/Resources/docker/db-master; fi"
-  - "if [ $DB = 'mariadb-10.0' ]; then docker build -t db-slave -f ./demo/Resources/docker/db-slave/Dockerfile-10.0 ./demo/Resources/docker/db-slave; fi"
   - "if [ $DB = 'mariadb-10.1' ]; then docker build -t db-master -f ./demo/Resources/docker/db-master/Dockerfile-10.1 ./demo/Resources/docker/db-master; fi"
   - "if [ $DB = 'mariadb-10.1' ]; then docker build -t db-slave -f ./demo/Resources/docker/db-slave/Dockerfile-10.1 ./demo/Resources/docker/db-slave; fi"
   - "if [ $DB = 'mariadb-10.2' ]; then docker build -t db-master -f ./demo/Resources/docker/db-master/Dockerfile-10.2 ./demo/Resources/docker/db-master; fi"
   - "if [ $DB = 'mariadb-10.2' ]; then docker build -t db-slave -f ./demo/Resources/docker/db-slave/Dockerfile-10.2 ./demo/Resources/docker/db-slave; fi"
   - "if [ $DB = 'mariadb-10.3' ]; then docker build -t db-master -f ./demo/Resources/docker/db-master/Dockerfile-10.3 ./demo/Resources/docker/db-master; fi"
   - "if [ $DB = 'mariadb-10.3' ]; then docker build -t db-slave -f ./demo/Resources/docker/db-slave/Dockerfile-10.3 ./demo/Resources/docker/db-slave; fi"
+  - "if [ $DB = 'mariadb-10.4' ]; then docker build -t db-master -f ./demo/Resources/docker/db-master/Dockerfile-10.4 ./demo/Resources/docker/db-master; fi"
+  - "if [ $DB = 'mariadb-10.4' ]; then docker build -t db-slave -f ./demo/Resources/docker/db-slave/Dockerfile-10.4 ./demo/Resources/docker/db-slave; fi"
   - docker run -p 13306:3306 --name db-master -e MYSQL_ROOT_PASSWORD=1234 -d db-master
   - docker run -p 13307:3306 --name db-slave --link db-master:master -e MYSQL_ROOT_PASSWORD=1234 -d db-slave
   - sleep 60;
@@ -40,10 +40,10 @@ install:
   travis_retry composer install --no-interaction --prefer-dist;
 
 script:
-  - "if [ $DB = 'mariadb-10.0' ]; then php ./demo/cron/[every]binlog_collect_partitioner.php change_pos mariadb-bin.000004 4; fi"
   - "if [ $DB = 'mariadb-10.1' ]; then php ./demo/cron/[every]binlog_collect_partitioner.php change_pos mariadb-bin.000005 4; fi"
   - "if [ $DB = 'mariadb-10.2' ]; then php ./demo/cron/[every]binlog_collect_partitioner.php change_pos mariadb-bin.000003 4; fi"
   - "if [ $DB = 'mariadb-10.3' ]; then php ./demo/cron/[every]binlog_collect_partitioner.php change_pos mariadb-bin.000003 4; fi"
+  - "if [ $DB = 'mariadb-10.4' ]; then php ./demo/cron/[every]binlog_collect_partitioner.php change_pos mariadb-bin.000003 4; fi"
   - php ./demo/cron/\[every\]binlog_collect_partitioner.php continue
   - php ./demo/cron/\[every\]binlog_collect_worker.php
   - php ./demo/cron/\[every\]binlog_collect_worker.php
